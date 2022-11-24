@@ -17,7 +17,7 @@
                 </div>
                 <div class="mb-3 col-lg-6 col-md-12">
                     <label for="dateRangePicker" class="form-label">Rango de Fecha</label>
-                    <input type="text" class="form-control" name="daterange" value="01/01/2022 - 01/15/2022" />
+                    <input type="text" class="form-control" name="daterange" value="" />
                 </div>
                 <div class="mb-3 col-lg-6 col-md-12">
                     <label for="exampleFormControlTextarea1" class="form-label">Descripcción</label>
@@ -33,7 +33,26 @@
 {% block script %}
 <script src="{% static 'js/moment.min.js' %}"></script>
 <script src="{% static 'js/daterangepicker.min.js' %}"></script>
-<script>$('input[name="daterange"]').daterangepicker();</script>
+<script type="text/javascript">
+$(function() {
+
+  $('input[name="daterange"]').daterangepicker({
+      autoUpdateInput: false,
+      locale: {
+          cancelLabel: 'Clear'
+      }
+  });
+
+  $('input[name="daterange"]').on('apply.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+  });
+
+  $('input[name="daterange"]').on('cancel.daterangepicker', function(ev, picker) {
+      $(this).val('');
+  });
+
+});
+</script>
 {% endblock script %}
 
 

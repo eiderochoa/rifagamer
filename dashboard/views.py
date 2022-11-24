@@ -18,10 +18,14 @@ def dsbSaveRifas(request):
         fecha = request.POST.get('daterange')
         fechaArray = fecha.split()
         if imagen != "" and descripccion != "" and fecha !="":
-            producto = Producto(nombre=descripccion, imagen= imagen, activo=True).save()
-            rifa = Rifa(producto=producto,fecha_inicio=fechaArray[0], fecha_fin=fechaArray[2]).save()
+            producto = Producto(nombre=descripccion, imagen= imagen, activo=True)
+            producto.save()
+            rifa = Rifa(producto=producto,fecha_inicio=fechaArray[0], fecha_fin=fechaArray[2])
+            rifa.save()
             for i in range(10000):
-                numero = Numeros(numero=i.zfill(5),rifa=rifa).save()
+                print(str(i).zfill(5))
+                numero = Numeros(numero=str(i).zfill(5),rifa=rifa)
+                numero.save()
             return redirect('listrifas')
         else:
             print("paso algo")

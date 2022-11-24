@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.conf import settings
 # Create your models here.
 class MXEstados(models.Model):
     nombre = models.CharField(max_length=100)
@@ -31,7 +31,7 @@ class Rifa(models.Model):
         ('2','Cerrada')
     )
     producto = models.ForeignKey(Producto, on_delete=models.DO_NOTHING)
-    fecha_inicio = models.DateTimeField()
+    fecha_inicio = models.DateField()
     fecha_fin = models.DateField()
     stado = models.CharField(max_length=1, choices=STADO, default='1')
     
