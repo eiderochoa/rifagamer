@@ -1,0 +1,40 @@
+{% extends 'dashboard/index.html' %}
+{% load static %}
+{% block head %}
+<link rel="stylesheet" href="{% static 'icons/bootstrap-icons.css' %}" />
+<link rel="stylesheet" href="{% static 'css/daterangepicker.css' %}"/>
+{% endblock head %}
+{% block contentright %}
+<div class="col-12">
+    <h5>Nueva Rifa</h5>
+    <div class="row">
+        <form method="post" action="{% url 'saverifa' %}">
+            {% csrf_token %}
+            <div class="row">
+                <div class="mb-3 col-lg-6 col-md-12">
+                    <label for="inputFile" class="form-label">Imagen</label>
+                    <input type="file" name="imagen" class="form-control" id="inputFile">
+                </div>
+                <div class="mb-3 col-lg-6 col-md-12">
+                    <label for="dateRangePicker" class="form-label">Rango de Fecha</label>
+                    <input type="text" class="form-control" name="daterange" value="01/01/2022 - 01/15/2022" />
+                </div>
+                <div class="mb-3 col-lg-6 col-md-12">
+                    <label for="exampleFormControlTextarea1" class="form-label">Descripcción</label>
+                    <textarea class="form-control" name="descripccion" id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div>
+                
+            </div>
+              <button class="btn btn-success" type="submit"><i class="bi bi-save2-fill"></i> Guardar</button>
+        </form>
+    </div>
+</div>
+{% endblock contentright %}
+{% block script %}
+<script src="{% static 'js/moment.min.js' %}"></script>
+<script src="{% static 'js/daterangepicker.min.js' %}"></script>
+<script>$('input[name="daterange"]').daterangepicker();</script>
+{% endblock script %}
+
+
+

@@ -1,0 +1,101 @@
+{% extends 'dashboard/index.html' %} {% load static %} 
+{% block menusidebar %}
+<li class="nav-item">
+  <a
+    href="{% url 'dshbindex' %}"
+    class="nav-link text-white"
+    aria-current="page"
+  >
+    <i class="bi bi-speedometer me-3"></i>
+    <span class="align-middle">Dashboard</span>
+  </a>
+</li>
+<li>
+  <a href="{% url 'listrifas' %}" class="nav-link text-white active">
+    <i class="bi bi-8-circle-fill me-3"></i>
+    <span class="align-middle">Rifas</span>
+  </a>
+</li>
+<li>
+  <a href="#" class="nav-link text-white">
+    <i class="bi bi-ui-checks-grid me-3"></i>
+    <span class="align-middle">Productos</span>
+  </a>
+</li>
+<li>
+  <a href="#" class="nav-link text-white">
+    <i class="bi bi-cash-coin me-3"></i>
+    <span class="align-middle">Pagos</span>
+  </a>
+</li>
+{% endblock menusidebar %} 
+{% block contentright%}
+<div class="col-12 mt-2">
+    <div class="col-12 pb-3">
+        <a href="{% url 'showaddrifas' %}" class="btn btn-success"><i class="bi bi-plus-circle"></i> Nueva rifa</a>
+    </div>
+    <div class="row">
+    <div class="card border-success shadow mb-3 col-lg-5 col-sm-12">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img src="/media/productosimg/pcgamer.jpg" class="img-fluid rounded-start" alt="...">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">Rifa Activa</h5>
+              <p class="card-text"><span class="h6">Producto:</span> This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+              <p class="card-text"><span class="h6">Fecha de cierre: </span><small class="text-muted">15/12/2022</small></p>
+              <button class="btn btn-danger">Terminar</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+          Featured
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Special title treatment</h5>
+          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+    <div class="col-lg-7 col-sm-12">
+        <div class="col-12 text-center">
+            <h5>Listado de Rifas</h5>
+        </div>
+        <table class="table table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>No.</th>
+                    <th>Producto</th>
+                    <th>Fecha Fin</th>
+                    <th>Stado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>PC Gamer</td>
+                    <td>15/12/2022</td>
+                    <td>Cerrada</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>PC Gamer</td>
+                    <td>15/12/2022</td>
+                    <td>Cerrada</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>PC Gamer</td>
+                    <td>15/12/2022</td>
+                    <td>Cerrada</td>
+                </tr>
+            </tbody>
+         </table>
+    </div>
+
+</div>
+</div>
+{% endblock contentright %}
