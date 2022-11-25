@@ -52,9 +52,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #Channels
+    'channels',
+    # Rest Framework
+    'rest_framework',
     # Celery apps
-	'celery',
-	'celery_progress',
+	# 'celery',
+	# 'celery_progress',
     # My APPs
     'dashboard',
     'rifa'
@@ -89,6 +93,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'rifagamer.wsgi.application'
+ASGI_APPLICATION = 'rifagamer.asgi.application'
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
 
 
 # Database

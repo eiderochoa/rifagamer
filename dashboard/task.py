@@ -7,7 +7,6 @@ from .models import *
 # Celery Task
 @shared_task(bind=True)
 def generateNumbers(self, rifa):
-    from .models import Numeros
     print('Task started')
     # Create the progress recorder instance
 	# which we'll use to update the web page
