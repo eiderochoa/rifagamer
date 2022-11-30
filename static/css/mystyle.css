@@ -1,3 +1,4 @@
+load
 .carousel-indicators1{
     position: absolute;
     right: 0;
@@ -13,3 +14,23 @@
     margin-left: 15%;
     list-style: none;
 }
+
+.a-slide{
+    background-image: url('/static/img/btn-bg.png'); 
+    background-size: cover; 
+    background-color: transparent; 
+    color:white; 
+    text-decoration: none;
+}
+.bg-rifagamer{
+    background-image: url('/static/img/mascara-bg.png');
+    background-repeat: repeat-y;
+    background-size: cover;
+    background-color: #171f2a;
+}
+
+.bg-section{
+    background: linear-gradient(90deg, rgba(40,138,137,1) 0%, rgba(39,166,157,1) 16%, rgba(148,88,182,1) 100%);
+    color: white;
+}
+
