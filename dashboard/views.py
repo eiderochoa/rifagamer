@@ -4,12 +4,27 @@ from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.http import JsonResponse
 from rifa.serializers import RifaSerializer
-
+from django.views.generic import ListView, UpdateView
 
 # Create your views here.
 def index(request):
     return render(request, template_name="dashboard/index.html")
-# class DsbListRifas()
+class DsbListRifas(ListView):
+    model = Rifa
+    template_name = 'dashboard/dsbListRifas.html'
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super(DsbListRifas, self).get_context_data(**kwargs)
+        if self.request.GET.get('buscar'):
+            indice = self.request.GET.get('buscar')
+            context['busqueda'] = indice
+        return context
+
+    def get_queryset(self):
+        queryset = Rifa .objects.all().order_by('-id')           
+        return queryset
+        
 def dsbListRifas(request):
     rifas = Rifa.objects.all()
     return render(request, template_name="dashboard/dsbListRifas.html", context={'rifas':rifas})
@@ -44,7 +59,6 @@ def dsbSaveRifas(request):
             rifa.save()
             channel_layer = get_channel_layer()            
             for i in range(10000):
-                print(str(i).zfill(5))
                 numero = Numeros(numero=str(i).zfill(5),rifa=rifa)
                 numero.save()
                 

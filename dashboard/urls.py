@@ -3,7 +3,7 @@ from .views import *
 
 urlpatterns = [
     path('index/', index, name="dshbindex"),
-    path("listrifas/", dsbListRifas, name="listrifas"),
+    path("listrifas/", DsbListRifas.as_view(), name="listrifas"),
     path("showaddrifa/", dsbShowFormRifas, name="showaddrifas"),
     path("saverifa/", dsbSaveRifas, name="saverifa"),
     path("allrifas/", dsbRifas, name="allrifas"),

@@ -4,9 +4,39 @@
 <link rel="stylesheet" href="{% static 'icons/bootstrap-icons.css' %}" />
 <link rel="stylesheet" href="{% static 'css/daterangepicker.css' %}"/>
 {% endblock head %}
+{% block menusidebar %}
+<li class="nav-item">
+  <a
+    href="{% url 'dshbindex' %}"
+    class="nav-link text-white"
+    aria-current="page"
+  >
+    <i class="bi bi-speedometer me-3"></i>
+    <span class="align-middle">Dashboard</span>
+  </a>
+</li>
+<li>
+  <a href="{% url 'listrifas' %}" class="nav-link text-white active">
+    <i class="bi bi-8-circle-fill me-3"></i>
+    <span class="align-middle">Rifas</span>
+  </a>
+</li>
+<li>
+  <a href="#" class="nav-link text-white">
+    <i class="bi bi-ui-checks-grid me-3"></i>
+    <span class="align-middle">Productos</span>
+  </a>
+</li>
+<li>
+  <a href="#" class="nav-link text-white">
+    <i class="bi bi-cash-coin me-3"></i>
+    <span class="align-middle">Pagos</span>
+  </a>
+</li>
+{% endblock menusidebar %} 
 {% block contentright %}
 <div class="col-12">
-    <h5>Nueva Rifa</h5>
+    <h5 class="mt-3">Nueva Rifa</h5>
     <div class="row">
         <form id="rifaForm" method="post" action="{% url 'saverifa' %}" enctype=multipart/form-data>
             {% csrf_token %}
@@ -28,7 +58,10 @@
                         <h6>Generando boletos...</h6>
                         <div class="progress">
                             <div id="progress" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
-                          </div>                          
+                          </div>                                                    
+                    </div>
+                    <div class="card-footer bg-warning">
+                        <h7 class="text-dark">No reinicie ni actualice su navegador mientras se completa esta acción.</h7>
                     </div>
                   </div>
                 

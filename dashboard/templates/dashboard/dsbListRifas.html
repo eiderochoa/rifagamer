@@ -1,7 +1,4 @@
-{% extends 'dashboard/index.html' %} {% load static %} 
-
-
-{% block menusidebar %}
+{% extends 'dashboard/index.html' %} {% load static %} {% block menusidebar %}
 <li class="nav-item">
   <a
     href="{% url 'dshbindex' %}"
@@ -30,144 +27,222 @@
     <span class="align-middle">Pagos</span>
   </a>
 </li>
-{% endblock menusidebar %} 
-{% block contentright%}
+{% endblock menusidebar %} {% block contentright%}
 <div class="col-12 mt-2">
-    <div class="col-12 pb-3">
-        <a href="{% url 'showaddrifas' %}" class="btn btn-success"><i class="bi bi-plus-circle"></i> Nueva rifa</a>
-    </div>
-    <div class="row" style="margin-right: 0;margin-left:0">
-      <table class="table table-bordered">
-        <thead class="table-light">
-            <tr>
-                <th>No.</th>
-                <th>Producto</th>
-                <th>Fecha Fin</th>
-                <th>Stado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-          {% for rifa in rifas %}
-          <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{rifa.producto}}</td>
-            <td>{{rifa.fecha_fin}}</td>
-            <td>{% if rifa.stado == '1' %}Actiba{%else%}Desactivada{% endif %}</td>
-            <td>
-              <a href="{% url 'delrifa' rifa.id %}" class="btn btn-outline-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Eliminar"><i class="bi bi-trash3-fill"></i></a>
-              <a href="{% url 'disrifa' rifa.id %}" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Deshabilitar"><i class="bi bi-eye-slash-fill"></i></a>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-     </table>
+    
+  <div class="col-12 pb-3">
+    <a href="{% url 'showaddrifas' %}" class="btn btn-success"
+      ><i class="bi bi-plus-circle"></i> Nueva rifa</a
+    >
+  </div>  
+  <h5>Lista de Rifas</h5>
+  <div class="row" style="margin-right: 0; margin-left: 0">
+    <table class="table table-bordered">
+      <thead class="table-light">
+        <tr>
+          <th>No.</th>
+          <th>Producto</th>
+          <th>Fecha Fin</th>
+          <th>Stado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for rifa in object_list %}
+        <tr>
+          <td>{{forloop.counter}}</td>
+          <td>{{rifa.producto}}</td>
+          <td>{{rifa.fecha_fin}}</td>
+          <td>
+            {% if rifa.stado == '1' %}Actiba{%else%}Desactivada{% endif %}
+          </td>
+          <td>
+            <a
+              href="{% url 'delrifa' rifa.id %}"
+              class="btn btn-outline-danger"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title="Eliminar"
+              ><i class="bi bi-trash3-fill"></i
+            ></a>
+            <a
+              href="{% url 'disrifa' rifa.id %}"
+              class="btn btn-outline-primary"
+              data-bs-toggle="tooltip"
+              data-bs-placement="top"
+              title="Deshabilitar"
+              ><i class="bi bi-eye-slash-fill"></i
+            ></a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="dtBasicExample_paginate">
+        <ul class="pagination">
+            {%if page_obj.has_previous%}
+            <li class="paginate_button page-item previous" id="dtBasicExample_previous">
+                <a href="?page={{page_obj.previous_page_number}}" aria-controls="dtBasicExample" data-dt-idx="0" tabindex="0" class="page-link">Anterior</a>
+            </li>
+            {% else %}
+            <li class="paginate_button page-item previous disabled" id="dtBasicExample_previous">
+                <a href="#" aria-controls="dtBasicExample" data-dt-idx="0" tabindex="0" class="page-link">Anterior</a>
+            </li>
+            {%endif%}
+            {%for i in page_obj.paginator.page_range %}
+                {%if i == page_obj.number%}
+                    <li class="paginate_button page-item active">
+                        <a href="#" aria-controls="dtBasicExample" data-dt-idx="1" tabindex="0" class="page-link">{{i}}</a>
+                    </li>
+                {%else%}
+                    <li class="paginate_button page-item ">
+                        <a href="?page={{i}}" aria-controls="dtBasicExample" data-dt-idx="2" tabindex="0" class="page-link">{{i}}</a>
+                    </li>
+                {% endif%}
+            {%endfor%}
+            {%if page_obj.has_next%}
+            <li class="paginate_button page-item next" id="dtBasicExample_next">
+                <a href="?page={{page_obj.next_page_number}}" aria-controls="dtBasicExample" data-dt-idx="7" tabindex="0" class="page-link">Siguiente</a>
+            </li>
+            {%else%}
+            <li class="paginate_button page-item next disabled" id="dtBasicExample_next">
+                <a href="#" aria-controls="dtBasicExample" data-dt-idx="7" tabindex="0" class="page-link">Siguiente</a>
+            </li>
+            {%endif%}
 
-{% comment %}     
-    <div class="card border-success shadow mb-3 col-lg-5 col-sm-12">
-        <div class="row g-0">
-          <div class="col-md-4">
-            <img src="/media/productosimg/pcgamer.jpg" class="img-fluid rounded-start" alt="...">
-          </div>
-          <div class="col-md-8">
-            <div class="card-body">
-              <h5 class="card-title">Rifa Activa</h5>
-              <p class="card-text"><span class="h6">Producto:</span> This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-              <p class="card-text"><span class="h6">Fecha de cierre: </span><small class="text-muted">15/12/2022</small></p>
-              <button class="btn btn-danger">Terminar</button>
-            </div>
-          </div>
-        </div>
-    </div>
-    <div class="card">
-        <div class="card-header">
-          Featured
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
-    <div class="col-lg-7 col-sm-12">
-        <div class="col-12 text-center">
-            <h5>Listado de Rifas</h5>
-        </div>
-        
-       
+        </ul>
+</div>
+
+    {% comment %}
     <div class="card border-success shadow mb-3 col-lg-5 col-sm-12">
       <div class="row g-0">
         <div class="col-md-4">
-          <img src="/media/productosimg/pcgamer.jpg" class="img-fluid rounded-start" alt="...">
+          <img
+            src="/media/productosimg/pcgamer.jpg"
+            class="img-fluid rounded-start"
+            alt="..."
+          />
         </div>
         <div class="col-md-8">
           <div class="card-body">
             <h5 class="card-title">Rifa Activa</h5>
-            <p class="card-text"><span class="h6">Producto:</span> This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-            <p class="card-text"><span class="h6">Fecha de cierre: </span><small class="text-muted">15/12/2022</small></p>
+            <p class="card-text">
+              <span class="h6">Producto:</span> This is a wider card with
+              supporting text below as a natural lead-in to additional content.
+              This content is a little bit longer.
+            </p>
+            <p class="card-text">
+              <span class="h6">Fecha de cierre: </span
+              ><small class="text-muted">15/12/2022</small>
+            </p>
             <button class="btn btn-danger">Terminar</button>
           </div>
         </div>
       </div>
-  </div>
-  <div class="card">
-      <div class="card-header">
-        Featured
-      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">Featured</div>
       <div class="card-body">
         <h5 class="card-title">Special title treatment</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+        <p class="card-text">
+          With supporting text below as a natural lead-in to additional content.
+        </p>
         <a href="#" class="btn btn-primary">Go somewhere</a>
       </div>
     </div>
-  <div class="col-lg-7 col-sm-12">
+    <div class="col-lg-7 col-sm-12">
       <div class="col-12 text-center">
-          <h5>Listado de Rifas</h5>
+        <h5>Listado de Rifas</h5>
       </div>
-      
-       <table
-       id="table"
-       data-show-columns="true"
-       data-search="true"
-       data-url="{% url 'allrifas' %}"
-       data-mobile-responsive="true"
-       data-check-on-init="true">
-       <thead>
-         <tr>
-           <th data-field="id" data-sortable="true">ID</th>
-           <th data-field="producto" data-sortable="true">Producto</th>
-           <th data-field="fecha_fin" data-sortable="true">Fecha Fin</th>
-           <th data-field="stado" data-sortable="true">Estado</th>
-           <th>Acciones</th>
-         </tr>
-       </thead>
-     </table>
 
-</div>  <table
-         id="table"
-         data-show-columns="true"
-         data-search="true"
-         data-url="{% url 'allrifas' %}"
-         data-mobile-responsive="true"
-         data-check-on-init="true">
-         <thead>
-           <tr>
-             <th data-field="id" data-sortable="true">ID</th>
-             <th data-field="producto" data-sortable="true">Producto</th>
-             <th data-field="fecha_fin" data-sortable="true">Fecha Fin</th>
-             <th data-field="stado" data-sortable="true">Estado</th>
-             <th>Acciones</th>
-           </tr>
-         </thead>
-       </table> {% endcomment %}
+      <div class="card border-success shadow mb-3 col-lg-5 col-sm-12">
+        <div class="row g-0">
+          <div class="col-md-4">
+            <img
+              src="/media/productosimg/pcgamer.jpg"
+              class="img-fluid rounded-start"
+              alt="..."
+            />
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">Rifa Activa</h5>
+              <p class="card-text">
+                <span class="h6">Producto:</span> This is a wider card with
+                supporting text below as a natural lead-in to additional
+                content. This content is a little bit longer.
+              </p>
+              <p class="card-text">
+                <span class="h6">Fecha de cierre: </span
+                ><small class="text-muted">15/12/2022</small>
+              </p>
+              <button class="btn btn-danger">Terminar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">Featured</div>
+        <div class="card-body">
+          <h5 class="card-title">Special title treatment</h5>
+          <p class="card-text">
+            With supporting text below as a natural lead-in to additional
+            content.
+          </p>
+          <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+      </div>
+      <div class="col-lg-7 col-sm-12">
+        <div class="col-12 text-center">
+          <h5>Listado de Rifas</h5>
+        </div>
 
+        <table
+          id="table"
+          data-show-columns="true"
+          data-search="true"
+          data-url="{% url 'allrifas' %}"
+          data-mobile-responsive="true"
+          data-check-on-init="true"
+        >
+          <thead>
+            <tr>
+              <th data-field="id" data-sortable="true">ID</th>
+              <th data-field="producto" data-sortable="true">Producto</th>
+              <th data-field="fecha_fin" data-sortable="true">Fecha Fin</th>
+              <th data-field="stado" data-sortable="true">Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+      <table
+        id="table"
+        data-show-columns="true"
+        data-search="true"
+        data-url="{% url 'allrifas' %}"
+        data-mobile-responsive="true"
+        data-check-on-init="true"
+      >
+        <thead>
+          <tr>
+            <th data-field="id" data-sortable="true">ID</th>
+            <th data-field="producto" data-sortable="true">Producto</th>
+            <th data-field="fecha_fin" data-sortable="true">Fecha Fin</th>
+            <th data-field="stado" data-sortable="true">Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+      </table>
+      {% endcomment %}
+    </div>
+    {% endblock contentright %} {% block script %}
+
+    <script>
+      $(function () {
+        $("#table").bootstrapTable();
+      });
+    </script>
+    {% endblock script %}
+  </div>
 </div>
-{% endblock contentright %}
-{% block script %}
-
-<script>
-  $(function() {
-    $('#table').bootstrapTable();
-  });
-</script>
-{% endblock script %}
