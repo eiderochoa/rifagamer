@@ -45,23 +45,23 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ml-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="#">INICIO <span class="sr-only">(current)</span></a>
+          <a class="nav-link scroll" href="#inicio">INICIO <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">PREGUNTAS FRECUENTES</a>
+          <a class="nav-link scroll" href="#preguntasFrecuentes">PREGUNTAS FRECUENTES</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="#">ACERCA DE NOSOTROS</a>
+            <a class="nav-link scroll" href="#acercaNosotros">ACERCA DE NOSOTROS</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">CONTÁCTANOS</a>
+          <a class="nav-link scroll" href="#contacto">CONTÁCTANOS</a>
         </li>
       </ul>
     </div>
   </nav>
 </div>
 {% comment %} Slide {% endcomment %}
-<div style="background-color:#171f2a">
+<div id="inicio" style="background-color:#171f2a">
 <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
   <ol class="carousel-indicators" style:"bottom: none;">
     <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
@@ -104,13 +104,104 @@
 </div>
 
 {% comment %} Seccion Preguntas frecuentes {% endcomment %}
-<div class="container-fluid bg-rifagamer" style="padding-left:0;padding-right:0;">
-  <hr>
-  <div class="col-10 bg-section">
-    <h6 class="p-2">PREGUNTAS FRECUENTES</h6>
+<section id="preguntasFrecuentes">
+  <div class="container-fluid bg-rifagamer" style="padding-left:0;padding-right:0;">
+    <hr>
+    <div class="position-relative">
+      <div class="col-10 borde">
+        <h6 class="p-2">a </h6>
+      </div>
+      <div class="col-10 bg-section position-absolute">
+        <h5 class="p-2">PREGUNTAS FRECUENTES</h5>
+      </div>
+    </div>
+    <hr>
+    <div class="container-fluid">
+      <div class="col-10">
+        <h6 style="color: #45b69b;">¿CÓMO SE ELIGE A LOS GANADORES?</h6>
+        <p>Todos nuestros sorteos se realizan en base a la Lotería Nacional para la Asistencia Pública mexicana.​</p>
+        <p>El ganador de Rifas Entre Amigos Guadalajara será el participante cuyo número de boleto coincida con las últimas cifras del primer premio ganador de la Lotería Nacional (las fechas serán publicadas en nuestra página oficial).</p>
+      </div>
+      <div class="col-10">
+        <h6 style="color: #9457b6;">¿QUÉ SUCEDE CUANDO EL NÚMERO GANADOR ES UN BOLETO NO VENDIDO?</h6>
+        <p>Se elige un nuevo ganador realizando la misma dinámica en otra fecha cercana (se anunciará la nueva fecha).​</p>
+        <p>Esto significa que, ¡Tendrías el doble de oportunidades de ganar con tu mismo boleto!</p>
+      </div>
+      <div class="col-10 ml-auto">
+        <h6 style="color: #dd5834;">¿DÓNDE SE PUBLICA A LOS GANADORES?</h6>
+        <p>En nuestra página oficial de Facebook Rifas Entre Amigos Guadalajara puedes encontrar todos y cada uno de nuestros sorteos anteriores, así como las transmisiones en vivo con Lotería Nacional y las entregas de premios a los ganadores!​</p>
+       </div>
+    </div>
   </div>
-
-</div>
+</section>
+{% comment %} Seccion Acerca de Nosotros {% endcomment %}
+<section id="acercaNosotros">
+  <div class="container-fluid bg-rifagamer" style="padding-left:0;padding-right:0;">
+    <hr>
+    <div class="col-10 ml-auto" style="padding-right:0;">
+      <div class="position-relative">
+        <div class="col-12 borde-derecho">
+          <h6 class="p-2">a </h6>
+        </div>
+        <div class="col-12 bg-section-derecho position-absolute">
+          <h5 class="p-2">ACERCA DE NOSOTROS</h5>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="col-10 ml-auto">      
+      <p class="text-center">Sorteos entre amigos en base a LOTERIA NACIONAL</p>
+      <p class="text-center">ARRIESGA POCO Y GANA MUCHO!</p>
+    </div>
+  </div>
+</section>
+{% comment %} Seccion de Contacto {% endcomment %}
+<section id="contacto">
+  <div class="container-fluid bg-rifagamer" style="padding-left:0;padding-right:0;">
+    <hr>
+    <div class="position-relative">
+      <div class="col-10 borde">
+        <h6 class="p-2">a </h6>
+      </div>
+      <div class="col-10 bg-section position-absolute">
+        <h5 class="p-2">CONTÁCTANOS</h5>
+      </div>
+    </div>
+    <hr>
+    <div class="col-11 ml-auto" >
+      <div class="col-12">
+        <a href="#" style="color:white; font-size: 1.5rem"><i class="bi bi-facebook"></i> RifasGamer</a>
+      </div>
+      <div class="col-12">
+        <a href="#" style="color:white; font-size: 1.5rem"><i class="bi bi-whatsapp"></i> RifasGamer</a>
+      </div>
+    </div>
+  </div>
+</section>
+<hr>
+<footer>
+  <div class="container-fluid">
+    <div class="col-12 text-center p-3">
+      <a href="#" style="color:white; text-decoration:none;">AVISO DE PRIVASIDAD</a>
+      <p class="my-auto" style="color: white; font-size:.8rem">SITIO DESARROLLADO POR: <a class="justify-content-start" href="https://www.tvkitsolutions.com" title="TVK IT Solutions"><img src="{% static 'img/tvk-logo.png' %}" width="28px"/></a></p>
+      <p class="my-auto" style="color: white; font-size:.8rem">DISEÑADO POR: <a class="justify-content-start" href="https://www.clamere.com" title="Clamere"><img src="{% static 'img/clamere-logo.png' %}" width="35px"/></a></p>
+      
+    </div>
+  </div>
+</footer>
 
 
 {% endblock body %}
+{% block script %}
+<script>
+  $(document).ready(function(){
+    var scrollLink  = $('.scroll');
+    scrollLink.click(function(e){
+      e.preventDefault();
+      $('body,html').animate({
+        scrollTop: $(this.hash).offset().top 
+      }, 1000)
+    })
+  });
+</script>
+{% endblock script %}

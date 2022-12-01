@@ -1,4 +1,7 @@
-load
+@font-face {
+    font-family: ChargeVectorBlack;
+    src: url("/static/font/ChargeVectorBlack-7BKqV.ttf");
+}
 .carousel-indicators1{
     position: absolute;
     right: 0;
@@ -32,5 +35,43 @@ load
 .bg-section{
     background: linear-gradient(90deg, rgba(40,138,137,1) 0%, rgba(39,166,157,1) 16%, rgba(148,88,182,1) 100%);
     color: white;
+    top: 0;
+    left: 0;
 }
 
+body{
+    background-color: #171f2a;
+}
+
+.borde{
+    border: 2px white;
+    border-style: solid;
+    left: 10px;
+    top: 10px;
+}
+
+section p{
+    color:white;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+section h6{
+    font-family: ChargeVectorBlack;
+}
+.bg-section-derecho{
+    background: linear-gradient(90deg, rgba(40,138,137,1) 0%, rgba(39,166,157,1) 16%, rgba(148,88,182,1) 100%);
+    color: white;
+    top: 0;
+    right: 0;
+}
+.borde-derecho{
+    border: 2px white;
+    border-style: solid;
+    right: 10px;
+    top: 10px;
+}
+
+footer{
+    background-color: #9457b6;
+}
