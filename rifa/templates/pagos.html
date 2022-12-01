@@ -1,0 +1,84 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block menu %}
+<nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(90deg, rgba(44,73,90,1) 0%, rgba(60,201,190,1) 33%, rgba(144,89,180,1) 100%);">
+    <a class="navbar-brand d-lg-none" href="#">Menú</a>
+    <button class="navbar-toggler" style="color:white" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link scroll" href="{% url 'index' %}#inicio">INICIO <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link scroll" href="{% url 'index' %}#preguntasFrecuentes">PREGUNTAS FRECUENTES</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link scroll" href="{% url 'index' %}#acercaNosotros">ACERCA DE NOSOTROS</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link scroll" href="{% url 'index' %}#contacto">CONTÁCTANOS</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+{% endblock menu %}
+{% block content %}
+<div class="container-fluid bg-rifagamer" style="padding-left:0;padding-right:0;">
+    <div class="col-11 col-lg-4 rifa-decor mx-auto mt-3">
+        <p class="text-center" style="color:white; text-transform: uppercase">Debes realizar el pago por alguna de éstas opciones y enviar tu comprobante de pago al</p>
+        <p class="text-center"><a style="color:white;" href="#" ><i class="bi bi-whatsapp"></i> +52 12373468354</a></p>
+    </div>
+    <div class="col-11 mx-auto">
+        <div class="col-2 mx-auto text-center">
+            <img class="text-center" src="{% static 'img/flecha.png' %}" height="90px">
+        </div>
+    </div>
+    <hr>
+    <div class="position-relative">
+      <div class="col-10 col-lg-6 borde">
+        <h6 class="p-2">a </h6>
+      </div>
+      <div class="col-10 col-lg-6 bg-section position-absolute">
+        <h5 class="p-2">INFORMACIÓN DE PAGO</h5>
+      </div>
+    </div>
+    <hr>
+    <div class="col-10 col-lg-4 bordered-container mx-auto">
+        <div class="col-12 mt-2 mx-auto text-center">
+            <h6 style="color: #dd5834; font-family: ChargeVectorBlack; text-transform:uppercas;">exclusivo transferencias y cajero</h6>
+            <h5 style="color: white; font-family: ChargeVector; text-transform:uppercas; font-size: 0.8rem">en concepto de pago: tu nombre</h5>
+        </div>
+        <div class="justify-content-start text-start"> 
+            <ul>
+                <li style="color:white"><span style="color:#45b69b; font-family: ChargeVectorBold;text-transform:uppercas;">BANCO:</span> BBVA</li>
+                <li style="color:white"><span style="color:#45b69b; font-family: ChargeVectorBold;text-transform:uppercas;">NOMBRE:</span> JESUS UBALDO ORTEGA PALOMAR</li>
+                <li style="color:white"><span style="color:#45b69b; font-family: ChargeVectorBold;text-transform:uppercas;">número de tarjeta:</span> 4152 3137 1654 2761 </li>
+            </ul>
+        </div>
+    </div>
+    <div class="col-10 col-lg-4 bordered-container mx-auto mt-3">
+        <div class="col-12 mt-2 mx-auto text-center">
+            <h6 style="color: #dd5834; font-family: ChargeVectorBlack; text-transform:uppercas;">pago en oxxo, 7eleven, farmacias</h6>
+        </div>
+        <hr>
+        <div class="justify-content-start text-start"> 
+            <ul>
+                <li style="color:white"><span style="color:#9457b6; font-family: ChargeVectorBold;text-transform:uppercas;">BANCO:</span> BBVA</li>
+                <li style="color:white"><span style="color:#9457b6; font-family: ChargeVectorBold;text-transform:uppercas;">número de tarjeta:</span> 4152 3137 1654 2761 </li>
+            </ul>
+        </div>
+        <div class="justify-content-start text-start"> 
+            <ul>
+                <li style="color:white"><span style="color:#9457b6; font-family: ChargeVectorBold;text-transform:uppercas;">BANCO:</span> BBVA</li>
+                <li style="color:white"><span style="color:#9457b6; font-family: ChargeVectorBold;text-transform:uppercas;">número de tarjeta:</span> 4152 3137 1654 2761 </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% block script %}{% endblock script %}
+

@@ -24,4 +24,5 @@ urlpatterns = [
     path("", index),
     path('rifas/', include('rifa.urls')),
     path('celery-progress/', include('celery_progress.urls')),
+   
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,116 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block menu %}
+<nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(90deg, rgba(44,73,90,1) 0%, rgba(60,201,190,1) 33%, rgba(144,89,180,1) 100%);">
+    <a class="navbar-brand d-lg-none" href="#">Menú</a>
+    <button class="navbar-toggler" style="color:white" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link scroll" href="{% url 'index' %}#inicio">INICIO <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link scroll" href="{% url 'index' %}#preguntasFrecuentes">PREGUNTAS FRECUENTES</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link scroll" href="{% url 'index' %}#acercaNosotros">ACERCA DE NOSOTROS</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link scroll" href="{% url 'index' %}#contacto">CONTÁCTANOS</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+{% endblock menu %}
+{% block content %}
+<section>
+    <div class="container-fluid bg-rifagamer" style="padding-left:0;padding-right:0;">
+        <hr>
+        <div class="position-relative">
+        <div class="col-10 col-lg-6 borde">
+            <h5>n</h5>
+            <h6>F</h6>
+        </div>
+        <div class="col-10 col-lg-6 bg-section position-absolute">
+            <h5>Nombre Producto</h5>
+            <h6>Fecha culminacion</h6>
+        </div>
+        </div>
+        <hr>
+        <div class="col-10 col-lg-6 mx-auto bordered-container" style="padding-left:0;padding-right:0;">
+            <div class="p-2">
+                <img class="img-fluid" src="{% static 'img/pc3.jpg' %}" width="100%">
+            </div>
+        </div>
+        <hr>
+        <div class="col-11 mx-auto text-center">
+            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#dd5834">1</span> BOLETO POR $185 (6 oportunidades)</p>
+            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#13b69b">2</span> BOLETOS POR $369 (12 oportunidades)</p>
+            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#9558b6">3</span> BOLETOS POR $549 (18 oportunidades)</p>
+            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#efc405">5</span> BOLETOS POR $909 (30 oportunidades)</p>
+            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#dd5834">10</span> BOLETOS POR $1,809 (60 oportunidades)</p>
+            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#13b69b">20</span> BOLETOS POR $3,599 (120 oportunidades)</p>
+            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#9558b6">30</span> BOLETOS POR $5,349 (180 oportunidades)</p>
+            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#efc405">50</span> BOLETOS POR $8,849 (300 oportunidades)</p>
+        </div>
+        <div class="container-fluid mt-3 pt-3" style="padding-left:0;padding-right:0; background-color: #9457b6">
+            <p class="text-center mb-0" style="color:white">Con tu boleto liquidado participas por:</p>
+            <p class="text-center mb-0" style="color:white"><span style="color:#13b69b; font-family: ChargeVectorBlack;">Nombre producto</span> - Fecha</p>
+            <div class="col-10 col-lg-4 mt-3 mx-auto">
+                <h5 class="text-center" style="color:#13b69b; font-family: ChargeVectorBlack;">BONO</h5>
+                <p class="text-center" style="color:white">SI COMPRASTE 1 BOLETO, PAGAS ANTES DE 12 HRS DE APARTADO Y ERES EL GANADOR TE LLEVAS <span style="color:#13b69b; font-family: ChargeVectorBold;">$50,000 MXN</span></p>
+                <p class="text-center" style="color:white">Ó</p>
+                <p class="text-center" style="color:white">SI COMPRASTE 3 BOLETOS Ó MÁS EL BONO ES DE <span style="color:#13b69b; font-family: ChargeVectorBold;">$80,000 MXN</span> (VÁLIDO HASTA EL 4 DE DICIEMBRE) PAGANDO EN MENOS DE 12 HRS</p>
+            </div>
+            <hr>
+        </div>
+        <hr>
+        <div class="col-10 col-lg-6 ml-auto" style="padding-right:0;">
+            <div class="position-relative">
+                <div class="col-12 borde-derecho">
+                    <h6 class="p-2"> HAZ CLICK EN TU NÚMERO DE LA SUERTE </h6>
+                </div>
+                <div class="col-12 bg-section-derecho position-absolute">
+                    <div class="row">
+                        <div class="col-2 text-center" style="padding-left:0;padding-right:0;">
+                            <i class="bi bi-caret-down-fill my-auto" style="font-size:2rem"></i>
+                        </div>
+                        <div class="col-8 mt-3">
+                            <h6> HAZ CLICK EN TU NÚMERO DE LA SUERTE </h6>
+                        </div>
+                        <div class="col-2 text-center" style="padding-left:0;padding-right:0;">
+                            <i class="bi bi-caret-down-fill" style="font-size:2rem"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="container-fluid">
+            <input class="form-control" type=text name="buscar" placeholder="Buscar" style="border-color:#13b69b"/>
+        </div>
+        <div class="container-fluid text-center mt-3">
+            <button class="btn btn-warning">MAQUINITA DE LA SUERTE</button>
+        </div>
+
+        <hr>
+        <div class="col-11 bordered-container mx-auto" style="padding-left:0;padding-right:0;">
+            <div class="p-2">
+                <button class="btn btn-aviable mb-1">00001</button>
+                <button class="btn btn-disable mb-1" disabled>00001</button>
+                <button class="btn btn-aviable mb-1">00001</button>
+                <button class="btn btn-disable mb-1" disabled>00001</button>
+                <button class="btn btn-aviable mb-1">00001</button>
+                <button class="btn btn-disable mb-1" disabled>00001</button>
+                <button class="btn btn-aviable mb-1">00001</button>
+                <button class="btn btn-disable mb-1" disabled>00001</button>
+
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

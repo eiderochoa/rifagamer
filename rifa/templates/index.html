@@ -2,40 +2,44 @@
 {% load static %}
 
 {% block body %}
+{% block header %}
 <div class="container-fluid" style="padding-left:0;padding-right:0;">
-<header style="background-color: #171f2a;">
-    {% comment %} Mobile view {% endcomment %}
-    <div class="column-fluid" style="background-image: url({% static 'img/bg-header.png' %}); background-size: cover; height: auto">
-        <div class="container-fluid pb-4" style="padding-left:0;padding-right:0;">
-            <div class="row" style="margin-right:0; margin-left:0">
-                <div class="col-3 col-sm-3 col-md-3 mt-3" style="padding-left:0;">
-                    <div class="col text-white text-center mt-5" style="background: rgb(83,138,171);
-                    background: linear-gradient(90deg, rgba(83,138,171,1) 0%, rgba(64,160,161,1) 50%, rgba(49,118,126,1) 100%);
-                    font-size: 2.2rem;">
-                        <a href="#" class="text-white"><i class="bi bi-credit-card"></i></a>
-                    </div>
-                
-                </div>
-                <div class="col-6 col-sm-6 col-md-6 justify-content-center">
-                    <div class="col-11 col-sm-10 col-md-8 mt-5 mx-auto">
-                        <img class="img-fluid" src="{% static 'img/logo.png' %}">
-                    </div>
-                </div>
-                <div class="col-3 col-sm-3 col-md-3 mt-3" style="padding-right:0;">
-                    <div class="col text-white text-center mt-5" style="background: rgb(83,138,171);
-                    background: linear-gradient(90deg, rgba(49,118,126,1) 0%, rgba(64,160,161,1) 50%, rgba(83,138,171,1) 100%);
-                    font-size: 2.2rem;">
-                        <a href="#" class="text-white"><i class="bi bi-ticket-perforated"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="container-fluid" style="padding-left:0;padding-right:0;">
-        <img class="img-fluid" src="{% static 'img/divicion.png' %}"/>
-    </div>
-</header>
+  <header style="background-color: #171f2a;">
+      {% comment %} Mobile view {% endcomment %}
+      <div class="column-fluid" style="background-image: url({% static 'img/bg-header.png' %}); background-size: cover; height: auto">
+          <div class="container-fluid pb-4" style="padding-left:0;padding-right:0;">
+              <div class="row" style="margin-right:0; margin-left:0">
+                  <div class="col-3 col-sm-3 col-md-3 mt-3" style="padding-left:0;">
+                      <div class="col text-white text-center mt-5" style="background: rgb(83,138,171);
+                      background: linear-gradient(90deg, rgba(83,138,171,1) 0%, rgba(64,160,161,1) 50%, rgba(49,118,126,1) 100%);
+                      font-size: 2.2rem;">
+                          <a href="{% url 'pagos' %}" class="text-white"><i class="bi bi-credit-card"></i></a>
+                      </div>
+                  
+                  </div>
+                  <div class="col-6 col-sm-6 col-md-6 justify-content-center">
+                      <div class="col-11 col-sm-10 col-md-8 mt-5 mx-auto">
+                          <img class="img-fluid" src="{% static 'img/logo.png' %}">
+                      </div>
+                  </div>
+                  <div class="col-3 col-sm-3 col-md-3 mt-3" style="padding-right:0;">
+                      <div class="col text-white text-center mt-5" style="background: rgb(83,138,171);
+                      background: linear-gradient(90deg, rgba(49,118,126,1) 0%, rgba(64,160,161,1) 50%, rgba(83,138,171,1) 100%);
+                      font-size: 2.2rem;">
+                          <a href="#" class="text-white"><i class="bi bi-ticket-perforated"></i></a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <div class="container-fluid" style="padding-left:0;padding-right:0;">
+          <img class="img-fluid" src="{% static 'img/divicion.png' %}"/>
+      </div>
+  </header>
+</div>
+{% endblock header %}
 {% comment %} Menu {% endcomment %}
+{% block menu %}
 <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(90deg, rgba(44,73,90,1) 0%, rgba(60,201,190,1) 33%, rgba(144,89,180,1) 100%);">
     <a class="navbar-brand d-lg-none" href="#">Menú</a>
     <button class="navbar-toggler" style="color:white" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,6 +64,8 @@
     </div>
   </nav>
 </div>
+{% endblock menu %}
+{% block content %}
 {% comment %} Slide {% endcomment %}
 <div id="inicio" style="background-color:#171f2a">
 <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
@@ -108,29 +114,33 @@
   <div class="container-fluid bg-rifagamer" style="padding-left:0;padding-right:0;">
     <hr>
     <div class="position-relative">
-      <div class="col-10 borde">
+      <div class="col-10 col-lg-6 borde">
         <h6 class="p-2">a </h6>
       </div>
-      <div class="col-10 bg-section position-absolute">
+      <div class="col-10 col-lg-6 bg-section position-absolute">
         <h5 class="p-2">PREGUNTAS FRECUENTES</h5>
       </div>
     </div>
     <hr>
     <div class="container-fluid">
-      <div class="col-10">
+      <div class="col-10 col-lg-6">
         <h6 style="color: #45b69b;">¿CÓMO SE ELIGE A LOS GANADORES?</h6>
         <p>Todos nuestros sorteos se realizan en base a la Lotería Nacional para la Asistencia Pública mexicana.​</p>
         <p>El ganador de Rifas Entre Amigos Guadalajara será el participante cuyo número de boleto coincida con las últimas cifras del primer premio ganador de la Lotería Nacional (las fechas serán publicadas en nuestra página oficial).</p>
       </div>
-      <div class="col-10">
+      <div class="col-10 col-lg-6">
         <h6 style="color: #9457b6;">¿QUÉ SUCEDE CUANDO EL NÚMERO GANADOR ES UN BOLETO NO VENDIDO?</h6>
         <p>Se elige un nuevo ganador realizando la misma dinámica en otra fecha cercana (se anunciará la nueva fecha).​</p>
         <p>Esto significa que, ¡Tendrías el doble de oportunidades de ganar con tu mismo boleto!</p>
       </div>
-      <div class="col-10 ml-auto">
+      <div class="col-10 col-lg-6 ml-auto d-lg-none d-sm-block">
         <h6 style="color: #dd5834;">¿DÓNDE SE PUBLICA A LOS GANADORES?</h6>
         <p>En nuestra página oficial de Facebook Rifas Entre Amigos Guadalajara puedes encontrar todos y cada uno de nuestros sorteos anteriores, así como las transmisiones en vivo con Lotería Nacional y las entregas de premios a los ganadores!​</p>
-       </div>
+      </div>
+      <div class="col-10 col-lg-6 d-lg-block d-none">
+        <h6 style="color: #dd5834;">¿DÓNDE SE PUBLICA A LOS GANADORES?</h6>
+        <p>En nuestra página oficial de Facebook Rifas Entre Amigos Guadalajara puedes encontrar todos y cada uno de nuestros sorteos anteriores, así como las transmisiones en vivo con Lotería Nacional y las entregas de premios a los ganadores!​</p>
+      </div>
     </div>
   </div>
 </section>
@@ -138,7 +148,7 @@
 <section id="acercaNosotros">
   <div class="container-fluid bg-rifagamer" style="padding-left:0;padding-right:0;">
     <hr>
-    <div class="col-10 ml-auto" style="padding-right:0;">
+    <div class="col-10 col-lg-6 ml-auto" style="padding-right:0;">
       <div class="position-relative">
         <div class="col-12 borde-derecho">
           <h6 class="p-2">a </h6>
@@ -149,7 +159,7 @@
       </div>
     </div>
     <hr>
-    <div class="col-10 ml-auto">      
+    <div class="col-10 col-lg-6 ml-auto">      
       <p class="text-center">Sorteos entre amigos en base a LOTERIA NACIONAL</p>
       <p class="text-center">ARRIESGA POCO Y GANA MUCHO!</p>
     </div>
@@ -160,10 +170,10 @@
   <div class="container-fluid bg-rifagamer" style="padding-left:0;padding-right:0;">
     <hr>
     <div class="position-relative">
-      <div class="col-10 borde">
+      <div class="col-10 col-lg-6 borde">
         <h6 class="p-2">a </h6>
       </div>
-      <div class="col-10 bg-section position-absolute">
+      <div class="col-10 col-lg-6 bg-section position-absolute">
         <h5 class="p-2">CONTÁCTANOS</h5>
       </div>
     </div>
@@ -178,6 +188,7 @@
     </div>
   </div>
 </section>
+{% endblock content %}
 <hr>
 <footer>
   <div class="container-fluid">
