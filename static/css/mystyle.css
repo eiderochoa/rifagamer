@@ -94,6 +94,7 @@ footer{
 .bordered-container{
     border: 2px white;
     border-style: solid;
+    background-color: #171f2a;
 }
 
 .btn-aviable{
@@ -126,4 +127,8 @@ footer{
       transition-duration: 0.15s, 0.15s;
       transition-timing-function: ease-in-out, ease-in-out;
       transition-delay: 0s, 0s;
+}
+#btnContainer{
+    max-height: 100px; 
+    overflow: scroll;
 }

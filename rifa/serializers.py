@@ -6,3 +6,8 @@ class RifaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Rifa
         fields = '__all__'
+
+class NumerosSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Numeros
+        fields = '__all__'

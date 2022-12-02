@@ -36,14 +36,14 @@
             <h6>F</h6>
         </div>
         <div class="col-10 col-lg-6 bg-section position-absolute">
-            <h5>Nombre Producto</h5>
-            <h6>Fecha culminacion</h6>
+            <h5>{{rifa.producto}}</h5>
+            <h6>{{rifa.fecha_fin}}</h6>
         </div>
         </div>
         <hr>
         <div class="col-10 col-lg-6 mx-auto bordered-container" style="padding-left:0;padding-right:0;">
             <div class="p-2">
-                <img class="img-fluid" src="{% static 'img/pc3.jpg' %}" width="100%">
+                <img class="img-fluid" src="/media/{{rifa.producto.imagen}}" width="100%">
             </div>
         </div>
         <hr>
@@ -90,27 +90,109 @@
             </div>
         </div>
         <hr>
-        <div class="container-fluid">
-            <input class="form-control" type=text name="buscar" placeholder="Buscar" style="border-color:#13b69b"/>
+        <div id="buscarCollapse" class="collapse show">
+            <div class="container-fluid">
+                <input class="form-control" type=text name="buscar" placeholder="Buscar" style="border-color:#13b69b"/>
+            </div>
+            <div class="container-fluid text-center mt-3">
+                <button class="btn btn-warning">MAQUINITA DE LA SUERTE</button>
+            </div>
         </div>
-        <div class="container-fluid text-center mt-3">
-            <button class="btn btn-warning">MAQUINITA DE LA SUERTE</button>
+        <div id="seleccionarCollapse" class="collapse">
+            <div class="modal-header" style="border-bottom:none">
+                <button id="closebtn" type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:white">
+                    <span aria-hidden="true">&times;</span>
+                  </button>          
+            </div>
+            <div class="col-11 text-center mx-auto">
+                <button class="btn btn-info">Aceptar</div>
+                <div class="col-11 mt-2 bordered-container mx-auto">
+                    <div id="btnContainer" class="p-2">
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <hr>
         <div class="col-11 bordered-container mx-auto" style="padding-left:0;padding-right:0;">
-            <div class="p-2">
-                <button class="btn btn-aviable mb-1">00001</button>
-                <button class="btn btn-disable mb-1" disabled>00001</button>
-                <button class="btn btn-aviable mb-1">00001</button>
-                <button class="btn btn-disable mb-1" disabled>00001</button>
-                <button class="btn btn-aviable mb-1">00001</button>
-                <button class="btn btn-disable mb-1" disabled>00001</button>
-                <button class="btn btn-aviable mb-1">00001</button>
-                <button class="btn btn-disable mb-1" disabled>00001</button>
+            <div id="btnsContainer" class="p-2 text-center">
+                <div id="spinner" class="spinner-border text-info mx-auto" role="status">
+                    <span class="sr-only">Loading...</span>
+                  </div>
+                  
+                {% comment %} <button class="btn btn-aviable mb-1 click-event">00001</button>
+                <button class="btn btn-disable mb-1 click-event" disabled>00001</button>
+                <button class="btn btn-aviable mb-1 click-event">00001</button>
+                <button class="btn btn-disable mb-1 click-event" disabled>00001</button>
+                <button class="btn btn-aviable mb-1 click-event">00001</button>
+                <button class="btn btn-disable mb-1 click-event" disabled>00001</button>
+                <button class="btn btn-aviable mb-1 click-event">00001</button>
+                <button class="btn btn-disable mb-1 click-event" disabled>00001</button> {% endcomment %}
 
             </div>
         </div>
     </div>
 </section>
 {% endblock content %}
+{% block script %}
+<script>
+    function unmask(id){
+        var v = '"#'+id+'"';
+        var v2 = id+"-d"
+        
+        var button = document.getElementById(id);
+        button.classList.remove('btn-disable');
+        button.classList.add('btn-aviable');
+        button.removeAttribute('disabled');
+        document.getElementById(v2).remove();
+        var quedan = $('.btn-select');
+        if(quedan.length ==0){
+            $('#buscarCollapse').collapse('show');
+            $('#seleccionarCollapse').collapse('hide');
+        }
+    
+    }
+    $(document).ready(function(){        
+        fetch('{% url 'getnumeros' rifa.id %}')
+        .then(response => response.json())
+        .then((json) => {     
+            $('#btnsContainer').empty();      
+            $.each(json, function(i,item){
+                if(item.seleccionado){
+                    var button = '<button id="'+item.id+'" class="btn btn-disable mb-1 mr-1 click-event" disabled>'+item.numero+'</button>';
+                    $('#btnsContainer').append(button);
+                }else{
+                    var button = '<button id="'+item.id+'" class="btn btn-aviable mb-1 mr-1 click-event">'+item.numero+'</button>';
+                    $('#btnsContainer').append(button);
+                }
+                
+            });
+            $('#spinner').addClass('d-none');
+            var buttons = $('.click-event');
+            buttons.click(function(e){
+            e.preventDefault();
+            $('#buscarCollapse').collapse('hide');
+            $('#seleccionarCollapse').collapse('show');
+            var button = '<button id="'+$(this).attr('id')+'-d" class="btn btn-aviable mb-1 mr-1 btn-select" onClick="unmask('+$(this).attr('id')+')">'+$(this).text()+'</button>';
+            $('#btnContainer').append(button);
+            {% comment %} var toAdd = $(this).clone();
+            toAdd.removeClass('click-event');
+            toAdd.on('click', unmark(toAdd.attr('id')));
+            $('#btnContainer').append(toAdd); {% endcomment %}
+            $(this).removeClass('btn-aviable');
+            $(this).addClass('btn-disable');
+            $(this).attr('disabled','');
+
+        });
+        })
+        .catch(err => console.log('solicitud fallida', err));
+        
+        $('#closebtn').click(function(){
+            $('#buscarCollapse').collapse('show');
+            $('#seleccionarCollapse').collapse('hide');
+        });
+    });
+    
+</script>
+{% endblock script %}

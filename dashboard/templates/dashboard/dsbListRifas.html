@@ -28,7 +28,7 @@
   </a>
 </li>
 {% endblock menusidebar %} {% block contentright%}
-<div class="col-12 mt-2">
+<div class="col-12 mt-2" style="background-color:white">
     
   <div class="col-12 pb-3">
     <a href="{% url 'showaddrifas' %}" class="btn btn-success"
@@ -44,6 +44,7 @@
           <th>Producto</th>
           <th>Fecha Fin</th>
           <th>Stado</th>
+          <th>ID</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -56,6 +57,7 @@
           <td>
             {% if rifa.stado == '1' %}Actiba{%else%}Desactivada{% endif %}
           </td>
+          <td>{{rifa.id}}</td>
           <td>
             <a
               href="{% url 'delrifa' rifa.id %}"
