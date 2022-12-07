@@ -91,24 +91,24 @@
         </div>
         <hr>
         <div id="buscarCollapse" class="collapse show">
-            <div class="container-fluid">
-                <input class="form-control" type=text name="buscar" placeholder="Buscar" style="border-color:#13b69b"/>
-            </div>
-            <div class="container-fluid text-center mt-3">
-                <button class="btn btn-warning">MAQUINITA DE LA SUERTE</button>
+            <div class="col-11 col-lg-4 mx-auto">
+                <div class="container-fluid">
+                    <input  id="inputBuscar" class="form-control" type=text name="buscar" onInput="Buscar()" placeholder="Buscar" style="border-color:#13b69b"/>
+                </div>
+                <div class="container-fluid text-center mt-3">
+                    <button class="btn btn-warning">MAQUINITA DE LA SUERTE</button>
+                </div>
             </div>
         </div>
-        <div id="seleccionarCollapse" class="collapse">
-            <div class="modal-header" style="border-bottom:none">
-                <button id="closebtn" type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:white">
-                    <span aria-hidden="true">&times;</span>
-                  </button>          
-            </div>
+        <div id="seleccionarCollapse" class="collapse mt-3">           
             <div class="col-11 text-center mx-auto">
-                <button class="btn btn-info">Aceptar</div>
+                <button id="btnSelBoletos" class="btn btn-info">Aceptar</div>
                 <div class="col-11 mt-2 bordered-container mx-auto">
                     <div id="btnContainer" class="p-2">
                     </div>
+                </div>
+                <div class="container-fluid mt-3 text-center">
+                    <h6 style="font-family: ChargeVectorBlack; color:#efc405">Para remover haz click en el boleto</h6>
                 </div>
             </div>
 
@@ -119,24 +119,60 @@
             <div id="btnsContainer" class="p-2 text-center">
                 <div id="spinner" class="spinner-border text-info mx-auto" role="status">
                     <span class="sr-only">Loading...</span>
-                  </div>
-                  
-                {% comment %} <button class="btn btn-aviable mb-1 click-event">00001</button>
-                <button class="btn btn-disable mb-1 click-event" disabled>00001</button>
-                <button class="btn btn-aviable mb-1 click-event">00001</button>
-                <button class="btn btn-disable mb-1 click-event" disabled>00001</button>
-                <button class="btn btn-aviable mb-1 click-event">00001</button>
-                <button class="btn btn-disable mb-1 click-event" disabled>00001</button>
-                <button class="btn btn-aviable mb-1 click-event">00001</button>
-                <button class="btn btn-disable mb-1 click-event" disabled>00001</button> {% endcomment %}
-
+                </div>
             </div>
         </div>
     </div>
 </section>
+<!-- Modal -->
+<div class="modal fade" id="selectForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content bg-rifagamer">
+        <div class="modal-header">
+          <h6 class="modal-title" id="exampleModalLabel" style="font-family: ChargeVectorBlack; color:white">LLENA TUS DATOS Y DA CLICK EN APARTAR</h6>
+          <button style="color:white" type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <p class="text-center" id="numBoletos" style="font-family: ChargeVectorBlack; color:#dd5834"></p>
+            <form id="formSelec">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="numeroWhatsapp" style="color: white">Número de WhatsApp(10 dígitos)</label>
+                  <input type="tel"  class="form-control" name="telefono" id="numeroWhatsapp" required>                  
+                </div>
+                <div class="form-group">
+                  <label for="nombre" style="color: white">Nombre(s)</label>
+                  <input type="text" class="form-control" name="nombre" id="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="apellidos" style="color: white">Apellidos</label>
+                    <input type="text" class="form-control" name="apellidos" id="apellidos" required>
+                </div>
+                <div class="form-group">
+                    <label for="estados" style="color: white">Seleccione un estado</label>
+                    <select class="form-control" id="estados" name="mx_stado" required>
+                        {%if estados%}
+                        {% for estado in estados %}
+                        <option value="{{estado.id}}">{{estado.nombre}}</option>
+                        {% endfor %}
+                        {% endif %}
+                    </select>
+                  </div>
+                
+                <button type="submit" class="btn btn-primary">Aceptar</button>
+              </form>
+        </div>
+        
+      </div>
+    </div>
+  </div>
 {% endblock content %}
 {% block script %}
 <script>
+    var listaBoletos ="";
+    // Desmarcar Boletos // 
     function unmask(id){
         var v = '"#'+id+'"';
         var v2 = id+"-d"
@@ -148,16 +184,21 @@
         document.getElementById(v2).remove();
         var quedan = $('.btn-select');
         if(quedan.length ==0){
-            $('#buscarCollapse').collapse('show');
             $('#seleccionarCollapse').collapse('hide');
         }
     
     }
-    $(document).ready(function(){        
-        fetch('{% url 'getnumeros' rifa.id %}')
+    // Buscar Boletos //
+    function Buscar(){
+        getNumeros('{% url 'findnumero' rifa.id %}?buscar='+$('#inputBuscar').val());
+    }
+    // Obtener numeros //
+    function getNumeros(url){
+        fetch(url)
         .then(response => response.json())
         .then((json) => {     
-            $('#btnsContainer').empty();      
+            $('#btnsContainer').empty();
+            listaBoletos = json;      
             $.each(json, function(i,item){
                 if(item.seleccionado){
                     var button = '<button id="'+item.id+'" class="btn btn-disable mb-1 mr-1 click-event" disabled>'+item.numero+'</button>';
@@ -172,7 +213,6 @@
             var buttons = $('.click-event');
             buttons.click(function(e){
             e.preventDefault();
-            $('#buscarCollapse').collapse('hide');
             $('#seleccionarCollapse').collapse('show');
             var button = '<button id="'+$(this).attr('id')+'-d" class="btn btn-aviable mb-1 mr-1 btn-select" onClick="unmask('+$(this).attr('id')+')">'+$(this).text()+'</button>';
             $('#btnContainer').append(button);
@@ -187,11 +227,76 @@
         });
         })
         .catch(err => console.log('solicitud fallida', err));
-        
-        $('#closebtn').click(function(){
-            $('#buscarCollapse').collapse('show');
-            $('#seleccionarCollapse').collapse('hide');
+    }
+    // Seleccionar Boletos //
+    function selecNumeros(participante_id, numero){
+        data = {'participante_id':participante_id, 'numero':numero}
+        $.ajax({
+            url: '{% url 'selecnumero' %}',
+            type: "POST",
+            data: data,
+            processData: false,
+            contentType: application/json,
+            dataType: "json",
+            success: function(data, textStatus, jqXHR){
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+
+            }
         });
+
+    }
+
+    $(document).ready(function(){        
+        getNumeros('{% url 'getnumeros' rifa.id %}');        
+        $('#btnSelBoletos').click(function(){
+            $('#selectForm').modal('show');
+            var cant = $('.btn-select').length;
+            if(cant == 1){
+                $('#numBoletos').text(cant+' BOLETO SELECCIONADO');
+            }else{
+                $('#numBoletos').text(cant+' BOLETOS SELECCIONADOS');
+            }
+            
+        });
+        $('#formSelec').on('submit', function(e){
+            e.preventDefault();
+            const form = $("#formSelec");
+            var data = new FormData(form[0]);
+            var urlAdd = $("#formSelec").attr('action');
+           $.ajax({
+            url: '{% url 'addparticipante' %}',
+            type: "POST",
+            data: data,
+            processData: false,
+            contentType: false,
+            dataType: "json",
+            success: function(data, textStatus, jqXHR){
+                var boletos = $()
+
+                {% comment %} document.getElementById('contModalSuccess').innerHTML = data.message;
+                $('#formCliente').modal('hide');
+                $('#ModalSuccess').modal('show');
+                setTimeout(function () {
+                    $('#ModalSuccess').modal('hide');
+                }, 3000);
+                setTimeout(function () {
+                    $("#formContactoN").trigger('reset');
+                    $("#formContactoN").append('<input name="cliente" value="'+data.id_cliente+'" type="hidden"/>');
+                    $('#formContacto').modal('show');
+                }, 4000); {% endcomment %}
+                
+               
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+                    {% comment %} document.getElementById('contModalDanger').innerHTML = jqXHR.responseJSON.message;
+                    $('#ModalDanger').modal('show');  {% endcomment %}
+               
+                
+            }
+        })
+        });
+
     });
     
 </script>
