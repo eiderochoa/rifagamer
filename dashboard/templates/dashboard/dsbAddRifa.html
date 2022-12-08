@@ -150,7 +150,7 @@
     });
     </script>
 <script>
-    var socket = new WebSocket('ws://localhost:8001/ws');
+    var socket = new WebSocket('ws://sock.onat.gob.cu/ws');
     socket.onmessage = function(event){
         var data = JSON.parse(event.data);
         if (data.message == 'Generando...'){
