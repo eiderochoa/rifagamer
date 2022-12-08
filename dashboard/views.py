@@ -5,6 +5,7 @@ from asgiref.sync import async_to_sync
 from django.http import JsonResponse
 from rifa.serializers import RifaSerializer
 from django.views.generic import ListView, UpdateView
+from itertools import islice
 
 # Create your views here.
 def index(request):
@@ -57,20 +58,37 @@ def dsbSaveRifas(request):
             producto.save()
             rifa = Rifa(producto=producto,fecha_inicio=fechaArray[0], fecha_fin=fechaArray[2])
             rifa.save()
-            channel_layer = get_channel_layer()            
-            for i in range(10000):
-                numero = Numeros(numero=str(i).zfill(5),rifa=rifa)
-                numero.save()
-                
+            channel_layer = get_channel_layer()  
+            batch_size = 1000      
+            objs = (Numeros(numero=str(i).zfill(5),rifa=rifa) for i in range(10000))
+            cont = 0
+            while True:
+                batch = list(islice(objs, batch_size))
+                if not batch:
+                    break
+                Numeros.objects.bulk_create(batch, batch_size)
                 async_to_sync(channel_layer.group_send)(
                     'prgbar',
                     {
                         'type': 'chat_message',
                         'message': 'Generando...',
-                        'status': str(i+1),
+                        'status': str(cont+1000),
                         'end': '10000'
                     }
-                )               
+                )    
+            # for i in range(10000):
+            #     numero = Numeros(numero=str(i).zfill(5),rifa=rifa)
+            #     numero.save()
+                
+            #     async_to_sync(channel_layer.group_send)(
+            #         'prgbar',
+            #         {
+            #             'type': 'chat_message',
+            #             'message': 'Generando...',
+            #             'status': str(i+1),
+            #             'end': '10000'
+            #         }
+            #     )               
 
 
             return JsonResponse(data={'msg':'Done'}, status=201)

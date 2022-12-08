@@ -21,7 +21,7 @@ django_asgi_app = get_asgi_application()
 application = ProtocolTypeRouter({
     "http": django_asgi_app,
     "websocket": AuthMiddlewareStack(URLRouter([
-        path('ws', WSConsumer.as_asgi())
+        path('ws/percent', WSConsumer.as_asgi())
         ]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)))
 })
 
