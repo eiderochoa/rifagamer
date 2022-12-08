@@ -96,7 +96,7 @@
                     <input  id="inputBuscar" class="form-control" type=text name="buscar" onInput="Buscar()" placeholder="Buscar" style="border-color:#13b69b"/>
                 </div>
                 <div class="container-fluid text-center mt-3">
-                    <button class="btn btn-warning">MAQUINITA DE LA SUERTE</button>
+                    <button class="btn btn-warning" data-toggle="modal" data-target="#maquinita">MAQUINITA DE LA SUERTE</button>
                 </div>
             </div>
         </div>
@@ -104,8 +104,10 @@
             <div class="col-11 text-center mx-auto">
                 <button id="btnSelBoletos" class="btn btn-info">Aceptar</div>
                 <div class="col-11 mt-2 bordered-container mx-auto">
+                    <div style="overflow:hidden">
                     <div id="btnContainer" class="p-2">
                     </div>
+                </div>
                 </div>
                 <div class="container-fluid mt-3 text-center">
                     <h6 style="font-family: ChargeVectorBlack; color:#efc405">Para remover haz click en el boleto</h6>
@@ -124,7 +126,7 @@
         </div>
     </div>
 </section>
-<!-- Modal -->
+<!-- Modal Form -->
 <div class="modal fade" id="selectForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content bg-rifagamer">
@@ -168,6 +170,58 @@
       </div>
     </div>
   </div>
+  <!-- Modal Form -->
+  <!-- Modal  Success-->
+    <div class="modal fade" id="modalSuccess" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content alert alert-success" style="background-color: #d4edda;border-color: #c3e6cb;">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Éxito</h5>
+                </div>
+                <div class="modal-body">
+                Su solicitud ha sido enviada. Suerte.
+                </div>        
+            </div>
+        </div>
+    </div>
+  <!-- Modal Success -->
+  <!-- Modal Random -->
+<div class="modal fade " id="maquinita" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content bg-rifagamer">
+        <div class="modal-header">
+          <h6 class="modal-title" id="exampleModalLabel" style="font-family: ChargeVectorBlack; color:white">LA MAQUINITA DE LA SUERTE</h6>
+          <button style="color:white" type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <p class="text-center" style="font-family: ChargeVectorBlack; color:#9558b6">Escriba cuantos boletos desea.</p>
+            <div class="col-6 mx-auto justify-content-center">
+                <div class="row">
+                    <input class="form-control" name="cantidad" id="input-cant">
+                    <div class="invalid-feedback">
+                        Please provide a valid city.
+                    </div>
+                    <button id="btnRandom" type="button" class="btn btn-info mt-2 text-center mx-auto">Go!</button>
+                </div>               
+            </div>
+            <div id="spinner" class="spinner-border text-info mx-auto d-none" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>            
+            <div class="col-10 bordered-container mt-3 mx-auto">
+                <div id="boletosRandom" class="col-12 p-2">
+                </div>
+            </div>           
+        </div> 
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onClick="showModalForm()">Aceptar</button>
+          </div>       
+      </div>
+    </div>
+</div>
+  <!-- Modal Random -->
+  
 {% endblock content %}
 {% block script %}
 <script>
@@ -230,13 +284,13 @@
     }
     // Seleccionar Boletos //
     function selecNumeros(participante_id, numero){
-        data = {'participante_id':participante_id, 'numero':numero}
+        data =JSON.stringify({'participante_id':participante_id, 'numero':numero});
         $.ajax({
             url: '{% url 'selecnumero' %}',
             type: "POST",
             data: data,
             processData: false,
-            contentType: application/json,
+            contentType: 'application/json',
             dataType: "json",
             success: function(data, textStatus, jqXHR){
             },
@@ -245,6 +299,18 @@
             }
         });
 
+    }
+
+    // Mostrar modal form //
+    function showModalForm(){
+        $('#maquinita').modal('hide');
+        $('#selectForm').modal('show');
+            var cant = $('.btn-select').length;
+            if(cant == 1){
+                $('#numBoletos').text(cant+' BOLETO SELECCIONADO');
+            }else{
+                $('#numBoletos').text(cant+' BOLETOS SELECCIONADOS');
+            }
     }
 
     $(document).ready(function(){        
@@ -272,20 +338,20 @@
             contentType: false,
             dataType: "json",
             success: function(data, textStatus, jqXHR){
-                var boletos = $()
-
-                {% comment %} document.getElementById('contModalSuccess').innerHTML = data.message;
-                $('#formCliente').modal('hide');
-                $('#ModalSuccess').modal('show');
+                var boletos = $('.btn-select');
+                $.each(boletos, function(i, item){
+                    var num = $(item).prop('id').split('-')[0];
+                    selecNumeros(data.participante_id,num);
+                });
+                $('#formSelec').trigger('reset');
+                $('#selectForm').modal('hide');
+                $('#modalSuccess').modal('show');
                 setTimeout(function () {
-                    $('#ModalSuccess').modal('hide');
+                    $('#modalSuccess').modal('hide');
                 }, 3000);
                 setTimeout(function () {
-                    $("#formContactoN").trigger('reset');
-                    $("#formContactoN").append('<input name="cliente" value="'+data.id_cliente+'" type="hidden"/>');
-                    $('#formContacto').modal('show');
-                }, 4000); {% endcomment %}
-                
+                    location.reload();
+                }, 4000);                              
                
             },
             error: function(jqXHR, textStatus, errorThrown){
@@ -295,6 +361,39 @@
                 
             }
         })
+        });
+
+        $('#btnRandom').click(function(){
+            if($('#input-cant').val() !=""){
+                $('#boletosRandom').empty();
+                $('#btnContainer').empty();
+                $.ajax({
+                    url: '/rifas/randomnumeros/{{rifa.id}}/'+$('#input-cant').val(),
+                    type: "get",
+                    data: null,
+                    processData: false,
+                    contentType: false,
+                    dataType: "json",
+                    success: function(data, textStatus, jqXHR){    
+                        $.each(data, function(i,item){
+                            var button = '<button id="'+item.id+'-d" class="btn btn-aviable mb-1 mr-1 btn-select">'+item.numero+'</button>';
+                            var button1 = '<button id="'+item.id+'-d" class="btn btn-aviable mb-1 mr-1">'+item.numero+'</button>';
+                            $('#btnContainer').append(button);
+                            $('#boletosRandom').append(button1);
+
+                        });       
+                    
+                    },
+                    error: function(jqXHR, textStatus, errorThrown){
+                            {% comment %} document.getElementById('contModalDanger').innerHTML = jqXHR.responseJSON.message;
+                            $('#ModalDanger').modal('show');  {% endcomment %}
+                    
+                        
+                    }
+                });
+            }
+            
+
         });
 
     });

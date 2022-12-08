@@ -1,5 +1,7 @@
 from django.db import models
 from django.conf import settings
+from PIL import Image
+from django_resized import ResizedImageField
 # Create your models here.
 class MXEstados(models.Model):
     nombre = models.CharField(max_length=100)
@@ -19,11 +21,18 @@ class Participante(models.Model):
 
 class Producto(models.Model):
     nombre = models.CharField(max_length=255)
-    imagen = models.ImageField(upload_to="productosimg/")
+    imagen = ResizedImageField(size=[950,670], quality=75, upload_to="productosimg/")
     activo = models.BooleanField(default=False)
 
     def __str__(self):
         return self.nombre
+    
+    def save(self, *args, **kwargs):
+        super(Producto, self).save(*args, **kwargs)
+        img = Image.open(self.imagen.path)
+        if img.width > 950 or img.height > 670:
+            output_size = (950, 670)
+
 
 class Rifa(models.Model):
     STADO=(
