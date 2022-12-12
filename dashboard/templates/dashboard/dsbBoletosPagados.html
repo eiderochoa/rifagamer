@@ -1,0 +1,68 @@
+{% extends 'dashboard/index.html' %} {% load static %}
+{% block menusidebar %}
+                  <li class="nav-item">         
+                    <a href="{% url 'dshbindex' %}" class="nav-link text-white" aria-current="page">
+                      <i class="bi bi-speedometer me-3"></i>
+                      <span class="align-middle">Dashboard</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{% url 'listrifas' %}" class="nav-link text-white">
+                      <i class="bi bi-8-circle-fill me-3"></i>
+                      <span class="align-middle">Rifas</span>
+                    </a>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a href="#" class="nav-link text-white dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="false">
+                      <i class="bi bi-cash-coin me-3"></i>
+                      <span class="align-middle">Boletos</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'showboletospagados' %}">Pagados</a>
+                        <a class="dropdown-item" href="{% url 'showboletosxpagar' %}">Por Pagar</a>
+                    </div>
+                  </li>
+                  {% endblock menusidebar %}
+{% block contentright%}
+<div class="col-12 mt-3">
+    
+    <div class="card"> 
+      <div class="card-header">
+        <h5>Boletos Pagados</h5>
+      </div>
+      <div class="card-body">
+        <select id="selectRifa" class="custom-select">
+            <option selected>Seleccionar Rifa</option>
+            {% if rifas %}
+                {% if id_rifa %}
+                    {% for rifa in rifas %}
+                        <option value="{{rifa.id}}" {% if rifa.id == id_rifa %}selected{% endif %}>{{rifa.producto.nombre}}</option>
+                    {% endfor %}
+                {%else%}
+                    {% for rifa in rifas %}
+                        <option value="{{rifa.id}}">{{rifa.producto.nombre}}</option>
+                    {% endfor %}
+                {% endif %}
+                
+            {% endif %}
+          </select>
+        {% block boletos %}
+        <div class="alert alert-primary mt-3" role="alert">
+            Seleccione una rifa para mostrar los boletos pagados.
+          </div>
+        {% endblock boletos %}
+        
+      </div>
+    </div>
+{%endblock contentright%}
+{% block script %}
+<script>
+   $(document).ready(function(){
+        $('#selectRifa').on('change',function(){
+            $(location).attr("href","/dashboard/showboletospagados/boletos/"+$('#selectRifa').val());
+        });
+       
+    });
+</script>
+{% endblock script %}
+

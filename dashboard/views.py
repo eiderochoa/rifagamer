@@ -6,14 +6,52 @@ from django.http import JsonResponse
 from rifa.serializers import RifaSerializer
 from django.views.generic import ListView, UpdateView
 from itertools import islice
-
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator
+from datetime import datetime
+from django.db.models import Q
+from django.contrib.auth import authenticate, logout
+from django.contrib.auth.decorators import permission_required, login_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.models import User, Permission
+from django.contrib.contenttypes.models import ContentType
 # Create your views here.
+
+def login(request):
+    if request.method == "GET":
+        return render(request, template_name="dashboard/login.html")
+    elif request.method == "POST":
+        user = authenticate(username=request.POST.get('username'),password=request.POST.get('password'))
+        if user is not None:
+            return redirect('dshbindex')
+        else:
+            return redirect('login')
+@login_required
+def logout_view(request):
+    logout(request)
+    return redirect('login')
+    
+
+@permission_required('rifa.view_rifa', 'rifa.view_numeros', raise_exception=True)
 def index(request):
-    return render(request, template_name="dashboard/index.html")
-class DsbListRifas(ListView):
+    cant_rifas = Rifa.objects.filter(stado='1').count()
+    cant_boletos_pagados = Numeros.objects.filter(pagado=True).count()
+    cant_boletos_disponibles = Numeros.objects.filter(seleccionado=False).count()
+    cant_boletos_x_pagar = Numeros.objects.filter(Q(seleccionado=True) & Q(pagado=False)).count()
+
+    context = {
+        'cant_rifas':cant_rifas, 
+        'cant_boletos_pagados':cant_boletos_pagados,
+        'cant_boletos_disponibles':cant_boletos_disponibles,
+        'cant_boletos_x_pagar': cant_boletos_x_pagar
+        }
+    return render(request, template_name="dashboard/index.html", context=context)
+
+class DsbListRifas(PermissionRequiredMixin,ListView):
     model = Rifa
     template_name = 'dashboard/dsbListRifas.html'
     paginate_by = 10
+    permission_required ='rifa.view_rifa'
 
     def get_context_data(self, **kwargs):
         context = super(DsbListRifas, self).get_context_data(**kwargs)
@@ -25,28 +63,42 @@ class DsbListRifas(ListView):
     def get_queryset(self):
         queryset = Rifa .objects.all().order_by('-id')           
         return queryset
-        
+
+@login_required
+@permission_required('rifa.view_rifa')    
 def dsbListRifas(request):
     rifas = Rifa.objects.all()
     return render(request, template_name="dashboard/dsbListRifas.html", context={'rifas':rifas})
+
+@login_required
+@permission_required('rifa.delete_rifa')
 def dsbDelRifa(request, pk):
     rifa = Rifa.objects.get(id=pk)
     rifa.delete()
     return redirect('listrifas')
+
+@login_required
+@permission_required('rifa.change_rifa')
 def dsbDisRifas(riquest, pk):
     rifa = Rifa.objects.get(id=pk)
     rifa.stado = '2'
     rifa.save()
     return redirect('listrifas')
 
+@login_required
+@permission_required('rifa.view_rifa')
 def dsbRifas(request):
     rifas = Rifa.objects.all()
     serialized = RifaSerializer(rifas, many=True)
     return JsonResponse(data=serialized.data, status=200, safe=False)
 
+@login_required
+@permission_required('rifa.add_rifa')
 def dsbShowFormRifas(request):
     return render(request, template_name="dashboard/dsbAddRifa.html")
 
+@login_required
+@permission_required('rifa.can_add_rifa', 'producto.can_add_producto', 'numeros.can_add_numeros')
 def dsbSaveRifas(request):
     if request.method == "POST":
         imagen = request.FILES.get('imagen')
@@ -94,3 +146,99 @@ def dsbSaveRifas(request):
             return JsonResponse(data={'msg':'Done'}, status=201)
         else:
             return JsonResponse(data={'msg':'Error'}, status=400)
+
+@login_required
+@permission_required('rifa.can_view_rifa')
+def showBoletosPorPagar(request):
+    rifas = Rifa.objects.filter(stado='1')
+    return render(request, template_name='dashboard/dsbBoletosXPagar.html', context={'rifas':rifas})
+@login_required
+@permission_required('rifa.can_view_rifa','numeros.can_view_numeros')
+def getBoletos(request, pk):
+    if pk:
+        try: 
+            boletos = Numeros.objects.filter(rifa=Rifa.objects.get(id=pk)).filter(Q(seleccionado=True) & Q(pagado=False))
+            rifas = Rifa.objects.filter(stado='1')
+            paginator = Paginator(boletos, 10) # Muestra 10 contactos por página.
+
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            return render(request, template_name='dashboard/dsbBoletos.html', context={'page_obj':page_obj, 'rifas':rifas, 'id_rifa':pk})
+        except ObjectDoesNotExist:
+            return JsonResponse(data={'msg':'Objeto no encontrado'}, status=404)
+@login_required
+@permission_required('numeros.can_change_numeros')
+def setBoletoPagado(request, pk):
+    if pk:
+        try:
+            boleto = Numeros.objects.get(id=pk)
+            boleto.pagado = True
+            boleto.fecha_pagado = datetime.now()
+            boleto.save()
+            return JsonResponse(data={'msg':'OK'}, status=200)
+        except ObjectDoesNotExist:
+            return JsonResponse(data={'msg':'Error al guardar los datos'},status=400)
+@login_required
+@permission_required('rifa.can_view_rifa')
+def showBoletosPagados(request):
+    rifas = Rifa.objects.filter(stado='1')
+    return render(request, template_name='dashboard/dsbBoletosPagados.html', context={'rifas':rifas})
+@login_required
+@permission_required('rifa.view_rifa','rifa.view_numeros')
+def getBoletosPagados(request, pk):
+    if pk:
+        try: 
+            boletos = Numeros.objects.filter(rifa=Rifa.objects.get(id=pk)).filter(pagado=True)
+            rifas = Rifa.objects.filter(stado='1')
+            paginator = Paginator(boletos, 10) # Muestra 10 contactos por página.
+
+            page_number = request.GET.get('page')
+            page_obj = paginator.get_page(page_number)
+            return render(request, template_name='dashboard/dsbBoletosPag.html', context={'page_obj':page_obj, 'rifas':rifas, 'id_rifa':pk})
+        except ObjectDoesNotExist:
+            return JsonResponse(data={'msg':'Objeto no encontrado'}, status=404)
+
+class UserListView(ListView):
+    model = User
+    template_name = "dashboard/listUsers.html"
+    paginate_by = 10
+    permission_required = 'auth.view_user'
+
+@login_required
+@permission_required('auth.add_user')
+def addUser(request):
+    if request.method == 'GET':
+        return render(request, template_name="dashboard/addUser.html")
+    elif request.method == 'POST':
+        user = User.objects.create_user(request.POST.get('username'),request.POST.get('email'),request.POST.get('password1'))
+        user.first_name = request.POST.get('first_name')
+        user.last_name = request.POST.get('last_name')
+        content_type = ContentType.objects.get_for_model(Rifa)
+        content_type1 = ContentType.objects.get_for_model(Numeros)
+        content_type2 = ContentType.objects.get_for_model(Producto)
+        content_type3 = ContentType.objects.get_for_model(Participante())
+
+        user.user_permissions.add(
+            Permission.objects.get(codename='view_rifa', content_type=content_type),
+            Permission.objects.get(codename='change_rifa', content_type=content_type),
+            Permission.objects.get(codename='delete_rifa', content_type=content_type),
+            Permission.objects.get(codename='add_rifa', content_type=content_type),
+            Permission.objects.get(codename='view_numeros', content_type=content_type1),
+            Permission.objects.get(codename='change_numeros', content_type=content_type1),
+            Permission.objects.get(codename='delete_numeros', content_type=content_type1),
+            Permission.objects.get(codename='add_numeros', content_type=content_type1),
+            Permission.objects.get(codename='add_producto', content_type=content_type2),
+            Permission.objects.get(codename='add_participante', content_type=content_type3),
+            )
+        user.save()
+        return redirect('listusers')
+@login_required
+@permission_required('auth.delete_user')
+def delUser(request, pk):
+    if pk:
+        try:
+            user = User.objects.get(id=pk)
+            user.delete()
+            return redirect('listusers')
+        except ObjectDoesNotExist:
+            return JsonResponse(data={'msg': 'El usuario no existe'}, status=404)

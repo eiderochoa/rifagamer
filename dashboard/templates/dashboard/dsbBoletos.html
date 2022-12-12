@@ -1,0 +1,77 @@
+{% extends 'dashboard/dsbBoletosXPagar.html' %}
+{% load static %}
+
+{% block boletos %}
+<div class="row" style="margin-right: 0; margin-left: 0">
+          <table class="table table-bordered">
+            <thead class="table-light">
+              <tr>
+                <th>No.</th>
+                <th>Boleto</th>
+                <th>Fecha Seleccionado</th>
+                <th>Participante</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+            {% if page_obj %}
+              {% for boleto in page_obj%}
+              <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{boleto.numero}}</td>
+                <td>{{boleto.fecha_seleccionado}}</td>
+                <td>{{boleto.presona.nombre}} {{boleto.presona.apellidos}} - {{boleto.presona.telefono}}</td>
+                <td class="text-center">
+                  <a id="btnConfirmPago"
+                    class="btn btn-outline-success"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    onClick="setConfirmPago({{boleto.id}})"
+                    title="Confirmar Pago">
+                    <i class="bi bi-cash-stack"></i></a>
+                  
+                </td>
+              </tr>
+              {% endfor %}
+            {%else%}
+            <tr><td colspan="5" class="alert alert-warning">No hay Boletos seleccionados aún.</td></tr>
+            {% endif %}
+            </tbody>
+          </table>
+          <div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="dtBasicExample_paginate">
+              <ul class="pagination">
+                  {%if page_obj.has_previous%}
+                  <li class="paginate_button page-item previous" id="dtBasicExample_previous">
+                      <a href="?page={{page_obj.previous_page_number}}" aria-controls="dtBasicExample" data-dt-idx="0" tabindex="0" class="page-link">Anterior</a>
+                  </li>
+                  {% else %}
+                  <li class="paginate_button page-item previous disabled" id="dtBasicExample_previous">
+                      <a href="#" aria-controls="dtBasicExample" data-dt-idx="0" tabindex="0" class="page-link">Anterior</a>
+                  </li>
+                  {%endif%}
+                  {%for i in page_obj.paginator.page_range %}
+                      {%if i == page_obj.number%}
+                          <li class="paginate_button page-item active">
+                              <a href="#" aria-controls="dtBasicExample" data-dt-idx="1" tabindex="0" class="page-link">{{i}}</a>
+                          </li>
+                      {%else%}
+                          <li class="paginate_button page-item ">
+                              <a href="?page={{i}}" aria-controls="dtBasicExample" data-dt-idx="2" tabindex="0" class="page-link">{{i}}</a>
+                          </li>
+                      {% endif%}
+                  {%endfor%}
+                  {%if page_obj.has_next%}
+                  <li class="paginate_button page-item next" id="dtBasicExample_next">
+                      <a href="?page={{page_obj.next_page_number}}" aria-controls="dtBasicExample" data-dt-idx="7" tabindex="0" class="page-link">Siguiente</a>
+                  </li>
+                  {%else%}
+                  <li class="paginate_button page-item next disabled" id="dtBasicExample_next">
+                      <a href="#" aria-controls="dtBasicExample" data-dt-idx="7" tabindex="0" class="page-link">Siguiente</a>
+                  </li>
+                  {%endif%}
+  
+              </ul>
+          </div>
+        </div>
+
+{% endblock boletos %}

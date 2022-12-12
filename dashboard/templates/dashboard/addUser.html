@@ -1,0 +1,46 @@
+{% extends 'dashboard/index.html' %}
+{% load static %}
+
+{% block contentright %}
+<div class="col-12 mt-3">    
+    <div class="card"> 
+      <div class="card-header">
+        <h5>Nuevo Usuario</h5>
+      </div>
+      <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="inputUsername">Nombre de Usuario</label>
+                <input type="text" class="form-control" id="inputUsername" name="username"> 
+            </div>
+            <div class="form-group">
+                <label for="inputFirstName">Nombre</label>
+                <input type="text" class="form-control" id="inputFirstName" name="first_name"> 
+            </div>   
+            <div class="form-group">
+                <label for="inputLastName">Apellidos</label>
+                <input type="text" class="form-control" id="inputLastName" name="last_name"> 
+            </div>
+            <div class="form-group">
+                <label for="inputEmail">Correo</label>
+                <input type="email" class="form-control" id="inputEmail" name="email"> 
+            </div>         
+            <div class="form-group">
+              <label for="inputNewPassword">Nueva Contraseña</label>
+              <input type="password" class="form-control" id="inputNewPassword" name="new_password1" aria-describedby="passHelp">
+              <small id="passHelp" class="form-text text-muted">La contraseña no debe tener información personal.</small> 
+              <small id="passHelp" class="form-text text-muted">La contraseña debe tener almenos 8 caracteres.</small>
+              <small id="passHelp" class="form-text text-muted">La contraseña no debe ser una comunmente usada.</small> 
+              <small id="passHelp" class="form-text text-muted">La contraseña no debe tener solo numeros.</small>  
+            </div>
+            <div class="form-group">
+                <label for="inputConfirmPassword">Confirmar Contraseña</label>
+                <input type="password" class="form-control" id="inputConfirmPassword" name="new_password2"> 
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </form>
+      </div>
+    </div>
+</div>
+{% endblock contentright %}

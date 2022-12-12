@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block body %}
+<div class="container-fluid h-100">
+    <div class="row align-items-center h-100">
+        <div class="col-10 col-lg-5 mx-auto my-auto">
+            <div class="card mt-5">
+                <div class="row no-gutters">
+                <div class="col-md-4" style="background-color: #9457b6;">
+                    <img src="{% static 'img/logo.png' %}" alt="..." width="100%">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        {% if form.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            Usuario o contraseña incorrecta, por favor pruebe de nuevo.
+                        </div>
+                        {% endif %}
+                    <h5 class="card-title">LogIn</h5>
+                    <form method="post" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                          <label for="inputUsername">Usuario</label>
+                          <input type="text" class="form-control" id="inputUsername" name="username">                          
+                        </div>
+                        <div class="form-group">
+                          <label for="inputPassword">Contraseña</label>
+                          <input type="password" class="form-control" id="inputPassword" name="password">
+                        </div>                        
+                        <button type="submit" class="btn btn-primary">Aceptar</button>
+                      </form>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}
