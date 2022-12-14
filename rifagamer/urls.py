@@ -18,6 +18,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from rifa.urls import index
+from django.conf.urls import handler404
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("dashboard/", include('dashboard.urls')),
@@ -26,3 +27,4 @@ urlpatterns = [
     path('celery-progress/', include('celery_progress.urls')),
    
 ]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+handler404 = 'rifa.views.error_404_view'

@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from datetime import datetime
 import random
+from django.views.defaults import page_not_found
 # Create your views here.
 
 def index(request):
@@ -25,11 +26,11 @@ def detalles(request,pk):
             if rifa:
                 return render(request, template_name='detalles.html', context={'rifa':rifa, 'estados':estados})
             else:
-                return render(request, template_name='404.html')
+                return render(request, template_name='rifanotfound.html')
         except ObjectDoesNotExist:
-            return render(request, template_name='404.html')
+            return render(request, template_name='rifanotfound.html')
     else:
-        return render(request, template_name='404.html')
+        return render(request, template_name='rifanotfound.html')
 
 def getNumeros(request,pk):
     if pk:
@@ -87,4 +88,5 @@ def getRandomNumero(request,pk,num):
     else:
         return JsonResponse(data={'msg':'Faltan datos'}, status=404)
 
-
+def error_404_view(request, exception):
+    return page_not_found(request,exception=exception, template_name='404.html')
