@@ -9,5 +9,8 @@ urlpatterns = [
     path("findnumero/<int:pk>", findNumero, name="findnumero"),
     path("addparticipante/", addParicipante, name="addparticipante"),
     path("selecnumero/", selecNumero, name="selecnumero"),
-    path("randomnumeros/<int:pk>/<int:num>",getRandomNumero, name="randomnumeros")
+    path("randomnumeros/<int:pk>/<int:num>",getRandomNumero, name="randomnumeros"),
+    path("getposibilidades/<int:pk>", getPosibilidades, name="getposibilidades"),
+    path("getboletoid/<int:pk>/<str:boleto>", getBoletoId, name="getboletoid")
+
 ]

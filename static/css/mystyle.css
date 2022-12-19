@@ -33,6 +33,7 @@
     color:white; 
     text-decoration: none;
 }
+
 .bg-rifagamer{
     background-image: url('/static/img/mascara-bg.png');
     background-repeat: repeat-y;
@@ -104,8 +105,8 @@ footer{
 }
 
 .btn-disable{
-    color: #dd5834;
-    border-color: #dd5834;
+    color: #171f2a;
+    border-color: #171f2a;
     padding: 0 1px 0 1px;
 }
 

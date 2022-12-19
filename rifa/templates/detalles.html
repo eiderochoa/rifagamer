@@ -112,6 +112,13 @@
                 <div class="container-fluid mt-3 text-center">
                     <h6 style="font-family: ChargeVectorBlack; color:#efc405">Para remover haz click en el boleto</h6>
                 </div>
+                <div class="col-11 mx-auto">
+                    <div class="container-fluid mt-3">
+                        <h5 style="font-family: ChargeVectorBold; color:#13b69b"><span class="badge badge-primary badge-pill">14</span> Posibilidades</h5>
+                        <ul id="posibilidades" class="list-group">                            
+                        </ul>                        
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -226,16 +233,17 @@
 {% block script %}
 <script>
     var listaBoletos ="";
+    var num_posibilidades = 0;
     // Desmarcar Boletos // 
     function unmask(id){
         var v = '"#'+id+'"';
-        var v2 = id+"-d"
-        
+        var v2 = id+"-d";
         var button = document.getElementById(id);
         button.classList.remove('btn-disable');
         button.classList.add('btn-aviable');
         button.removeAttribute('disabled');
         document.getElementById(v2).remove();
+        delPosibilidades(button.innerText);
         var quedan = $('.btn-select');
         if(quedan.length ==0){
             $('#seleccionarCollapse').collapse('hide');
@@ -277,6 +285,7 @@
             $(this).removeClass('btn-aviable');
             $(this).addClass('btn-disable');
             $(this).attr('disabled','');
+            showPosibilidades($(this).text());
 
         });
         })
@@ -311,6 +320,63 @@
             }else{
                 $('#numBoletos').text(cant+' BOLETOS SELECCIONADOS');
             }
+    }
+
+    function showPosibilidades(boleto){
+        $.ajax({
+            url: '/rifas/getposibilidades/{{rifa.id}}',
+            type: "get",
+            data: null,
+            processData: false,
+            contentType: false,
+            dataType: "json",
+            success: function(data, textStatus, jqXHR){   
+                var boletos = "";
+                num_posibilidades = num_posibilidades +1; 
+                $.each(data, function(i,item){
+                    var btn = document.getElementById(item.id);
+                    if(btn != null){
+                        btn.classList.remove('btn-aviable');
+                        btn.classList.add('btn-disable');
+                        btn.setAttribute('disabled','');
+
+                    }                    
+                    if(i+1 != data.length){
+                        boletos = boletos + item.numero+', ';
+                    }else{
+                        boletos = boletos + item.numero;
+                    }
+                    num_posibilidades = num_posibilidades+1;
+                    
+                });
+                var li = '<li id="'+boleto+'" class="list-group-item list-group-item-danger">('+boleto+')-> '+boletos+'</li>';
+                $('#posibilidades').append(li);
+            
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+            
+                
+            }
+        });
+
+    }
+    function delPosibilidades(b){
+        var li = document.getElementById(b);
+        var texto = li.innerText;
+        var spl = texto.split("->")[1];
+        var arr = spl.split(",");
+        $.each(arr, function(i, item){
+            fetch('/rifas/getboletoid/{{rifa.id}}/'+item.split(" ")[1])
+            .then(response => response.json())
+            .then((json) => {
+                $("#"+json.id).removeClass('btn-disable');
+                $("#"+json.id).addClass('btn-aviable');
+                $("#"+json.id).prop("disabled", false);
+            })
+            .catch(err => console.log('solicitud fallida', err));
+        });
+        
+        li.remove();        
     }
 
     $(document).ready(function(){        

@@ -43,6 +43,7 @@ class Rifa(models.Model):
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()
     stado = models.CharField(max_length=1, choices=STADO, default='1')
+    num_posibilidades = models.IntegerField(default=1)
     
 
 class Numeros(models.Model):

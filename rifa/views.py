@@ -90,3 +90,25 @@ def getRandomNumero(request,pk,num):
 
 def error_404_view(request, exception):
     return page_not_found(request,exception=exception, template_name='404.html')
+
+def getPosibilidades(request, pk):
+    if pk:
+        try:
+            rifa = Rifa.objects.get(id=pk)
+            items = list(Numeros.objects.filter(rifa=rifa).filter(seleccionado=False))
+            boletos = random.sample(items, rifa.num_posibilidades)
+            serialized = NumerosSerializer(boletos, many=True)
+            return JsonResponse(data=serialized.data, safe=False)
+        except ObjectDoesNotExist:
+            return JsonResponse(data={'msg':'No existe la rifa'}, status=404)
+
+def getBoletoId(request,pk, boleto):   
+    if boleto:
+        try:
+            rifa = Rifa.objects.get(id=pk)
+            numero = Numeros.objects.filter(rifa=rifa).filter(numero=boleto).first()
+            serialized = NumerosSerializer(numero, many=False)
+            return JsonResponse(data=serialized.data, safe=False)
+        except ObjectDoesNotExist:
+            return JsonResponse(data={'msg':'No existe la rifa'}, status=404)
+
