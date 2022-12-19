@@ -1,5 +1,6 @@
 {% extends 'index.html' %}
 {% load static %}
+{% load calculate_odds %}
 {% block menu %}
 <nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(90deg, rgba(44,73,90,1) 0%, rgba(60,201,190,1) 33%, rgba(144,89,180,1) 100%);">
     <a class="navbar-brand d-lg-none" href="#">Menú</a>
@@ -48,14 +49,14 @@
         </div>
         <hr>
         <div class="col-11 mx-auto text-center">
-            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#dd5834">1</span> BOLETO POR $185 (6 oportunidades)</p>
-            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#13b69b">2</span> BOLETOS POR $369 (12 oportunidades)</p>
-            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#9558b6">3</span> BOLETOS POR $549 (18 oportunidades)</p>
-            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#efc405">5</span> BOLETOS POR $909 (30 oportunidades)</p>
-            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#dd5834">10</span> BOLETOS POR $1,809 (60 oportunidades)</p>
-            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#13b69b">20</span> BOLETOS POR $3,599 (120 oportunidades)</p>
-            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#9558b6">30</span> BOLETOS POR $5,349 (180 oportunidades)</p>
-            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#efc405">50</span> BOLETOS POR $8,849 (300 oportunidades)</p>
+            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#dd5834">1</span> BOLETO POR $185 ({{rifa.num_posibilidades|calculate:1}} oportunidades)</p>
+            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#13b69b">2</span> BOLETOS POR $369 ({{rifa.num_posibilidades|calculate:2}} oportunidades)</p>
+            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#9558b6">3</span> BOLETOS POR $549 ({{rifa.num_posibilidades|calculate:3}} oportunidades)</p>
+            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#efc405">5</span> BOLETOS POR $909 ({{rifa.num_posibilidades|calculate:5}} oportunidades)</p>
+            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#dd5834">10</span> BOLETOS POR $1,809 ({{rifa.num_posibilidades|calculate:10}} oportunidades)</p>
+            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#13b69b">20</span> BOLETOS POR $3,599 ({{rifa.num_posibilidades|calculate:20}} oportunidades)</p>
+            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#9558b6">30</span> BOLETOS POR $5,349 ({{rifa.num_posibilidades|calculate:30}} oportunidades)</p>
+            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#efc405">50</span> BOLETOS POR $8,849 ({{rifa.num_posibilidades|calculate:50}} oportunidades)</p>
         </div>
         <div class="container-fluid mt-3 pt-3" style="padding-left:0;padding-right:0; background-color: #9457b6">
             <p class="text-center mb-0" style="color:white">Con tu boleto liquidado participas por:</p>
@@ -96,7 +97,7 @@
                     <input  id="inputBuscar" class="form-control" type=text name="buscar" onInput="Buscar()" placeholder="Buscar" style="border-color:#13b69b"/>
                 </div>
                 <div class="container-fluid text-center mt-3">
-                    <button class="btn btn-warning" data-toggle="modal" data-target="#maquinita">MAQUINITA DE LA SUERTE</button>
+                    <button class="btn btn-warning" onClick="showModalBtn()">MAQUINITA DE LA SUERTE</button>
                 </div>
             </div>
         </div>
@@ -114,7 +115,7 @@
                 </div>
                 <div class="col-11 mx-auto">
                     <div class="container-fluid mt-3">
-                        <h5 style="font-family: ChargeVectorBold; color:#13b69b"><span class="badge badge-primary badge-pill">14</span> Posibilidades</h5>
+                        <h5 style="font-family: ChargeVectorBold; color:#13b69b"><span id="numPosibilidades" class="badge badge-primary badge-pill">14</span> Posibilidades</h5>
                         <ul id="posibilidades" class="list-group">                            
                         </ul>                        
                     </div>
@@ -208,7 +209,7 @@
                 <div class="row">
                     <input class="form-control" name="cantidad" id="input-cant">
                     <div class="invalid-feedback">
-                        Please provide a valid city.
+                        Por favor introduzca un número válido.
                     </div>
                     <button id="btnRandom" type="button" class="btn btn-info mt-2 text-center mx-auto">Go!</button>
                 </div>               
@@ -219,8 +220,16 @@
             <div class="col-10 bordered-container mt-3 mx-auto">
                 <div id="boletosRandom" class="col-12 p-2">
                 </div>
-            </div>           
-        </div> 
+            </div>
+            <div class="col-11 mx-auto">
+                <div class="container-fluid mt-3">
+                    <h5 style="font-family: ChargeVectorBold; color:#13b69b"><span id="numPosibilidadesModal" class="badge badge-primary badge-pill">0</span> Posibilidades</h5>
+                    <ul id="posibilidadesModal" class="list-group">                            
+                    </ul>                        
+                </div>
+            </div>            
+        </div>
+        
         <div class="modal-footer">
             <button type="button" class="btn btn-primary" onClick="showModalForm()">Aceptar</button>
           </div>       
@@ -347,10 +356,17 @@
                         boletos = boletos + item.numero;
                     }
                     num_posibilidades = num_posibilidades+1;
+                    $('#numPosibilidades').text(num_posibilidades);
+                    $('#numPosibilidadesModal').text(num_posibilidades);
                     
                 });
                 var li = '<li id="'+boleto+'" class="list-group-item list-group-item-danger">('+boleto+')-> '+boletos+'</li>';
-                $('#posibilidades').append(li);
+                if($('#maquinita').hasClass('show')){                    
+                    $('#posibilidadesModal').append(li);
+                }else{
+                    $('#posibilidades').append(li);
+                }
+                
             
             },
             error: function(jqXHR, textStatus, errorThrown){
@@ -377,6 +393,15 @@
         });
         
         li.remove();        
+    }
+    function showModalBtn(){
+        num_posibilidades = 0;
+        $('#posibilidadesModal').empty();
+        $('#boletosRandom').empty();
+        $('#btnContainer').empty();
+        $('#maquinita').modal('show');
+        $('#input-cant').val('');
+
     }
 
     $(document).ready(function(){        
@@ -430,6 +455,7 @@
         });
 
         $('#btnRandom').click(function(){
+            console.log($('#input-cant').val());
             if($('#input-cant').val() !=""){
                 $('#boletosRandom').empty();
                 $('#btnContainer').empty();
@@ -446,6 +472,7 @@
                             var button1 = '<button id="'+item.id+'-d" class="btn btn-aviable mb-1 mr-1">'+item.numero+'</button>';
                             $('#btnContainer').append(button);
                             $('#boletosRandom').append(button1);
+                            showPosibilidades(item.numero);
 
                         });       
                     
