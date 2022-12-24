@@ -77,6 +77,34 @@
             }
         });
     }
+    function showAplazarPagoForm(boleto){
+      $('#id_boleto').val(boleto);
+      $('#modalAplazarPago').modal('show');
+    }
+    function aplazarPago(){
+      const form = $("#aplazarPagoForm");
+      var data = new FormData(form[0]);
+      var url = $("#aplazarPagoForm").attr('action');
+      $.ajax({
+        url: url,
+        type: "POST",
+        data: data,
+        processData: false,
+        contentType: false,
+        dataType: "json",
+        success: function(data, textStatus, jqXHR){
+          if(data.msg == 'OK'){
+            location.reload();
+          } 
+           
+        },
+        error: function(jqXHR, textStatus, errorThrown){
+           
+            
+        }
+    });
+    }
+
     $(document).ready(function(){
         $('#selectRifa').on('change',function(){
             $(location).attr("href","/dashboard/showboletosxpagar/boletos/"+$('#selectRifa').val());

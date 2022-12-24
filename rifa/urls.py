@@ -11,6 +11,7 @@ urlpatterns = [
     path("selecnumero/", selecNumero, name="selecnumero"),
     path("randomnumeros/<int:pk>/<int:num>",getRandomNumero, name="randomnumeros"),
     path("getposibilidades/<int:pk>", getPosibilidades, name="getposibilidades"),
-    path("getboletoid/<int:pk>/<str:boleto>", getBoletoId, name="getboletoid")
+    path("getboletoid/<int:pk>/<str:boleto>", getBoletoId, name="getboletoid"),
+    path("vincularposibilidades/", vincularPosibilidades, name="vincularposibilidades")
 
 ]

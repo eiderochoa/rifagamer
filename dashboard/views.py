@@ -8,7 +8,7 @@ from django.views.generic import ListView, UpdateView
 from itertools import islice
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.db.models import Q
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth.decorators import permission_required, login_required
@@ -81,7 +81,10 @@ def dsbDelRifa(request, pk):
 @permission_required('rifa.change_rifa')
 def dsbDisRifas(riquest, pk):
     rifa = Rifa.objects.get(id=pk)
-    rifa.stado = '2'
+    if rifa.stado == '1':
+        rifa.stado = '2'
+    elif rifa.stado == '2':
+        rifa.stado = '1'
     rifa.save()
     return redirect('listrifas')
 
@@ -104,30 +107,32 @@ def dsbSaveRifas(request):
         imagen = request.FILES.get('imagen')
         descripccion = request.POST.get('descripccion')
         fecha = request.POST.get('daterange')
+        num_posibilidades = request.POST.get('num_posibilidades')
+        num_boletos = request.POST.get('num_boletos')
         fechaArray = fecha.split()
         if imagen != "" and descripccion != "" and fecha !="":
             producto = Producto(nombre=descripccion, imagen= imagen, activo=True)
             producto.save()
-            rifa = Rifa(producto=producto,fecha_inicio=fechaArray[0], fecha_fin=fechaArray[2])
+            rifa = Rifa(producto=producto,fecha_inicio=fechaArray[0], fecha_fin=fechaArray[2],num_posibilidades=num_posibilidades, num_boletos=num_boletos)
             rifa.save()
-            channel_layer = get_channel_layer()  
+            # channel_layer = get_channel_layer()  
             batch_size = 1000      
-            objs = (Numeros(numero=str(i).zfill(5),rifa=rifa) for i in range(10000))
+            objs = (Numeros(numero=str(i).zfill(5),rifa=rifa) for i in range(int(num_boletos)))
             cont = 0
             while True:
                 batch = list(islice(objs, batch_size))
                 if not batch:
                     break
                 Numeros.objects.bulk_create(batch, batch_size)
-                async_to_sync(channel_layer.group_send)(
-                    'prgbar',
-                    {
-                        'type': 'chat_message',
-                        'message': 'Generando...',
-                        'status': str(cont+1000),
-                        'end': '10000'
-                    }
-                )    
+                # async_to_sync(channel_layer.group_send)(
+                #     'prgbar',
+                #     {
+                #         'type': 'chat_message',
+                #         'message': 'Generando...',
+                #         'status': str(cont+1000),
+                #         'end': '10000'
+                #     }
+                # )    
             # for i in range(10000):
             #     numero = Numeros(numero=str(i).zfill(5),rifa=rifa)
             #     numero.save()
@@ -166,6 +171,33 @@ def getBoletos(request, pk):
             return render(request, template_name='dashboard/dsbBoletos.html', context={'page_obj':page_obj, 'rifas':rifas, 'id_rifa':pk})
         except ObjectDoesNotExist:
             return JsonResponse(data={'msg':'Objeto no encontrado'}, status=404)
+
+class NumerosListView(PermissionRequiredMixin,ListView):
+    model = Numeros
+    template_name = "dashboard/dsbBoletos.html"
+    permission_required = ('rifa.view_numeros','rifa.change_numeros','rifa.view_rifa')
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super(NumerosListView, self).get_context_data(**kwargs)
+        context['id_rifa'] = self.kwargs['pk']
+        context['rifas'] = Rifa.objects.filter(stado='1')
+        if self.request.GET.get('buscar'):
+            indice = self.request.GET.get('buscar')
+            context['busqueda'] = indice            
+        return context
+
+    def get_queryset(self):
+        pk = self.kwargs['pk']
+        buscar = self.request.GET.get('buscar')
+        if buscar:
+            queryset = Numeros.objects.filter(rifa=Rifa.objects.get(id=pk)).filter(Q(seleccionado=True) & Q(pagado=False) & Q(principal=True) & Q(numero__icontains=buscar))
+        else:
+            queryset = Numeros.objects.filter(rifa=Rifa.objects.get(id=pk)).filter(Q(seleccionado=True) & Q(pagado=False) & Q(principal=True))
+        return queryset
+
+
+
 @login_required
 @permission_required('numeros.can_change_numeros')
 def setBoletoPagado(request, pk):
@@ -175,6 +207,12 @@ def setBoletoPagado(request, pk):
             boleto.pagado = True
             boleto.fecha_pagado = datetime.now()
             boleto.save()
+            boletos = Numeros.objects.filter(id_principal=pk)
+            if boletos:
+                for boleto in boletos.iterator():
+                    boleto.pagado = True
+                    boleto.fecha_pagado = datetime.now()
+                    boleto.save()                    
             return JsonResponse(data={'msg':'OK'}, status=200)
         except ObjectDoesNotExist:
             return JsonResponse(data={'msg':'Error al guardar los datos'},status=400)
@@ -198,11 +236,38 @@ def getBoletosPagados(request, pk):
         except ObjectDoesNotExist:
             return JsonResponse(data={'msg':'Objeto no encontrado'}, status=404)
 
+class PagadosListView(PermissionRequiredMixin,ListView):
+    model = Numeros
+    template_name = "dashboard/dsbBoletosPag.html"
+    permission_required = ('rifa.view_numeros','rifa.change_numeros','rifa.view_rifa')
+    paginate_by = 10
+
+    def get_context_data(self, **kwargs):
+        context = super(PagadosListView, self).get_context_data(**kwargs)
+        context['id_rifa'] = self.kwargs['pk']
+        context['rifas'] = Rifa.objects.filter(stado='1')
+        if self.request.GET.get('buscar'):
+            indice = self.request.GET.get('buscar')
+            context['busqueda'] = indice            
+        return context
+
+    def get_queryset(self):
+        pk = self.kwargs['pk']
+        buscar = self.request.GET.get('buscar')
+        if buscar:
+            queryset = Numeros.objects.filter(rifa=Rifa.objects.get(id=pk)).filter(Q(pagado=True) & Q(numero__icontains=buscar))
+        else:
+            queryset = Numeros.objects.filter(rifa=Rifa.objects.get(id=pk)).filter(pagado=True)
+        return queryset
+
+
 class UserListView(ListView):
     model = User
     template_name = "dashboard/listUsers.html"
     paginate_by = 10
     permission_required = 'auth.view_user'
+
+    
 
 @login_required
 @permission_required('auth.add_user')
@@ -242,3 +307,18 @@ def delUser(request, pk):
             return redirect('listusers')
         except ObjectDoesNotExist:
             return JsonResponse(data={'msg': 'El usuario no existe'}, status=404)
+
+@login_required
+@permission_required('rifa.change_numeros')
+def aplazarPago(request):
+    if request.method == "POST":
+        if request.POST.get('horas') and request.POST.get('id_boleto'):
+            boleto = Numeros.objects.get(id=request.POST.get('id_boleto'))
+            boleto.fecha_seleccionado = boleto.fecha_seleccionado + timedelta(hours=int(request.POST.get('horas')))
+            boleto.save()
+            return JsonResponse(data={'msg':'OK'},status=200)
+        else:
+            return JsonResponse(data={'msg':'Error'},status=400)
+    else:
+        return JsonResponse(data={'msg':'Metodo no perminido'},status=400)
+

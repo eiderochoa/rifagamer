@@ -67,9 +67,10 @@ def selecNumero(request):
         if body['participante_id'] != "" and body['numero'] != "":
             try:
                 numero = Numeros.objects.get(id=body['numero'])
-                numero.presona = Participante.objects.get(id=body['participante_id'])
+                numero.participante = Participante.objects.get(id=body['participante_id'])
                 numero.seleccionado = True
                 numero.fecha_seleccionado = datetime.now()
+                numero.principal = True
                 numero.save()
                 return JsonResponse(data={'msg':'Boleto actualizado'}, status=200)
             except ObjectDoesNotExist:
@@ -111,4 +112,27 @@ def getBoletoId(request,pk, boleto):
             return JsonResponse(data=serialized.data, safe=False)
         except ObjectDoesNotExist:
             return JsonResponse(data={'msg':'No existe la rifa'}, status=404)
+@csrf_exempt
+def vincularPosibilidades(request):
+    if request.method == "POST":
+        body_unicode = request.body.decode('utf-8') 	
+        body = json.loads(body_unicode)
+        if body['participante_id'] != "" and body['numero'] != "" and body['num_principal'] != "" and body['id_rifa'] !="":
+            try:
+                numero = Numeros.objects.filter(rifa=Rifa.objects.get(id=body['id_rifa'])).filter(numero=body['numero']).first()
+                numero.participante = Participante.objects.get(id=body['participante_id'])
+                numero.seleccionado = True
+                numero.fecha_seleccionado = datetime.now()
+                numero.secundario = True
+                numero.id_principal = body['num_principal']
+                numero.save()
+                return JsonResponse(data={'msg':'Boleto actualizado'}, status=200)
+            except ObjectDoesNotExist:
+                return JsonResponse(data={'msg':'El Boleto no existe'}, status=404)
+        else:
+            return JsonResponse(data={'msg':'Faltan datos'}, status=400)
+
+    else:
+        return JsonResponse(data={'msg':'Metodo no permitido'}, status=400)
+
 

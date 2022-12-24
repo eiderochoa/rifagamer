@@ -2,6 +2,17 @@
 {% load static %}
 
 {% block boletos %}
+<div class="col mx-end mt-2">
+  <form class="form-inline my-2 my-lg-0">
+    {% if busqueda %}
+    <input class="form-control mr-sm-2" type="search" name="buscar" placeholder="Buscar" aria-label="Search" value="{{busqueda}}">
+    {%else%}
+    <input class="form-control mr-sm-2" type="search" name="buscar" placeholder="Buscar" aria-label="Search">
+    {% endif %}
+    
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
+  </form>
+</div>
 <div class="row" style="margin-right: 0; margin-left: 0">
           <table class="table table-bordered">
             <thead class="table-light">
@@ -18,10 +29,15 @@
               {% for boleto in page_obj%}
               <tr>
                 <td>{{forloop.counter}}</td>
-                <td>{{boleto.numero}}</td>
+                <td>
+                  {% if boleto.principal %}
+                  <i class="bi bi-cash-stack" data-bs-toggle="tooltip" data-bs-placement="top" title="Boleto Pagado" style="color: #28a745;"></i>
+                  {%else%}
+                  <i class="bi bi-bag-plus" data-bs-toggle="tooltip" data-bs-placement="top" title="Boleto Adicional" style="color: #17a2b8;"></i>
+                  {% endif %} {{boleto.numero}}</td>
                 <td>{{boleto.fecha_seleccionado}}</td>
                 <td>{{boleto.fecha_pagado}}</td>
-                <td>{{boleto.presona.nombre}} {{boleto.presona.apellidos}} - {{boleto.presona.telefono}}</td>                
+                <td>{{boleto.participante.nombre}} {{boleto.participante.apellidos}} - {{boleto.participante.telefono}}</td>                
               </tr>
               {% endfor %}
             {%else%}

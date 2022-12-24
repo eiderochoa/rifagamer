@@ -44,6 +44,7 @@ class Rifa(models.Model):
     fecha_fin = models.DateField()
     stado = models.CharField(max_length=1, choices=STADO, default='1')
     num_posibilidades = models.IntegerField(default=1)
+    num_boletos = models.IntegerField(default=10000)
     
 
 class Numeros(models.Model):
@@ -54,4 +55,7 @@ class Numeros(models.Model):
     pagado = models.BooleanField(default=False)
     fecha_pagado = models.DateTimeField(blank=True, null=True)
     ganador = models.BooleanField(default=False)
-    presona = models.ForeignKey(Participante, on_delete=models.DO_NOTHING, blank=True, null=True)
+    participante = models.ForeignKey(Participante, on_delete=models.DO_NOTHING, blank=True, null=True)
+    principal = models.BooleanField(default=False)
+    secundario = models.BooleanField(default=False)
+    id_principal = models.IntegerField(default=0, blank=True, null=True)

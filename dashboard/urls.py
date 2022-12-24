@@ -17,8 +17,11 @@ urlpatterns = [
     path("delrifa/<int:pk>", dsbDelRifa, name="delrifa"),
     path("disrifa/<int:pk>", dsbDisRifas, name="disrifa"),
     path("showboletosxpagar/", showBoletosPorPagar, name="showboletosxpagar"),
-    path("showboletosxpagar/boletos/<int:pk>", getBoletos, name="boletos"),
+    # path("showboletosxpagar/boletos/<int:pk>", getBoletos, name="boletos"),
+    path("showboletosxpagar/boletos/<int:pk>", NumerosListView.as_view(), name="boletos"),
     path("setconfirmpago/<int:pk>", setBoletoPagado, name="setconfirmpago"),
     path("showboletospagados/", showBoletosPagados, name="showboletospagados"),
-    path("showboletospagados/boletos/<int:pk>", getBoletosPagados, name="boletospagados")
+    # path("showboletospagados/boletos/<int:pk>", getBoletosPagados, name="boletospagados"),
+    path("showboletospagados/boletos/<int:pk>", PagadosListView.as_view(), name="boletospagados"),
+    path("aplazarpago/", aplazarPago, name="aplazarpago")
 ]
