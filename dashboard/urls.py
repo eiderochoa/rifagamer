@@ -23,5 +23,9 @@ urlpatterns = [
     path("showboletospagados/", showBoletosPagados, name="showboletospagados"),
     # path("showboletospagados/boletos/<int:pk>", getBoletosPagados, name="boletospagados"),
     path("showboletospagados/boletos/<int:pk>", PagadosListView.as_view(), name="boletospagados"),
-    path("aplazarpago/", aplazarPago, name="aplazarpago")
+    path("aplazarpago/", aplazarPago, name="aplazarpago"),
+    path("addbono/", addBono, name="addbono"),
+    path("delbono/<int:pk>/<int:id_rifa>", delBono, name="delbono"),
+    path("updaterifa/<int:pk>", updateRifa, name="updaterifa"),
+    path("saveupdatedrifa/", saveUpdatedRifa, name="saveupdatedrifa")
 ]

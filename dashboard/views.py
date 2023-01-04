@@ -3,7 +3,7 @@ from rifa.models import *
 from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.http import JsonResponse
-from rifa.serializers import RifaSerializer
+from rifa.serializers import RifaSerializer, BonoSerializer
 from django.views.generic import ListView, UpdateView
 from itertools import islice
 from django.core.exceptions import ObjectDoesNotExist
@@ -110,7 +110,7 @@ def dsbSaveRifas(request):
         num_posibilidades = request.POST.get('num_posibilidades')
         num_boletos = request.POST.get('num_boletos')
         fechaArray = fecha.split()
-        if imagen != "" and descripccion != "" and fecha !="":
+        if imagen != "" and descripccion != "" and fecha !="" and num_posibilidades != "" and num_boletos != "":
             producto = Producto(nombre=descripccion, imagen= imagen, activo=True)
             producto.save()
             rifa = Rifa(producto=producto,fecha_inicio=fechaArray[0], fecha_fin=fechaArray[2],num_posibilidades=num_posibilidades, num_boletos=num_boletos)
@@ -148,7 +148,7 @@ def dsbSaveRifas(request):
             #     )               
 
 
-            return JsonResponse(data={'msg':'Done'}, status=201)
+            return JsonResponse(data={'msg':'Done', 'id_rifa':rifa.id}, status=201)
         else:
             return JsonResponse(data={'msg':'Error'}, status=400)
 
@@ -321,4 +321,75 @@ def aplazarPago(request):
             return JsonResponse(data={'msg':'Error'},status=400)
     else:
         return JsonResponse(data={'msg':'Metodo no perminido'},status=400)
+
+@login_required
+@permission_required('rifa.add_bono', 'rifa.view_bono')
+def addBono(request):
+    if request.method == "POST":
+        if request.POST.get('id_rifa'):
+            rifa = Rifa.objects.get(id=request.POST.get('id_rifa'))
+            bono = Bono(rifa=rifa, condiciones=request.POST.get('condiciones'),premio=request.POST.get('premio'))
+            bono.save()
+            bonos = Bono.objects.filter(rifa=rifa)
+            serialized = BonoSerializer(bonos, many=True)
+            return JsonResponse(data=serialized.data, status=201, safe=False)
+        else:
+            return JsonResponse(data={"msg":"Rifa no encontrada"}, status=400)
+
+    else:
+        return JsonResponse(data={"msg":"Metodo no permitido"}, status=400) 
+
+@login_required
+@permission_required('rifa.remove_bono')
+def delBono(request, pk, id_rifa):
+    if pk:
+        bono = Bono.objects.get(id=pk)
+        bono.delete()
+        rifa = Rifa.objects.get(id=id_rifa)
+        bonos = Bono.objects.filter(rifa=rifa)
+        serialized = BonoSerializer(bonos, many=True)
+        return JsonResponse(data=serialized.data, status=201, safe=False)
+    else:
+        return JsonResponse(data={"msg":"Faltan datos"}, status=400)
+
+@login_required
+@permission_required('rifa.view_bono', 'rifa.view_bono')
+def updateRifa(request, pk):
+    if pk:
+        try:
+            rifa = Rifa.objects.get(id=pk)
+            bonos = Bono.objects.filter(rifa=rifa)
+            return render(request, template_name='dashboard/dsbUpdateRifa.html', context={'rifa':rifa, 'bonos':bonos})
+        except ObjectDoesNotExist:
+            return JsonResponse(data={"msg":"Rifa no encontrada"}, status=404)
+    else:
+        return JsonResponse(data={"msg":"Faltan datos"}, status=400)
+
+@login_required
+@permission_required('rifa.update_producto', 'rifa.update_rifa')
+def saveUpdatedRifa(request):
+    if request.method == "POST":
+        rifa = Rifa.objects.get(id=request.POST.get('id_rifa'))
+        producto = rifa.producto        
+        imagen = request.FILES.get('imagen')
+        descripccion = request.POST.get('descripccion')
+        fecha = request.POST.get('daterange')
+        num_posibilidades = request.POST.get('num_posibilidades')        
+        if descripccion != "" and num_posibilidades != "" :            
+            if imagen != None:
+                producto.imagen = imagen
+            producto.nombre = descripccion
+            producto.save()
+            if fecha != "":
+                fechaArray = fecha.split()
+                rifa.fecha_inicio = fechaArray[0]
+                rifa.fecha_fin = fechaArray[2]
+            rifa.num_posibilidades = num_posibilidades
+            rifa.save()
+            return JsonResponse(data={'msg':'Datos actualizados Correctamente'}, status=200)
+        else:
+            return JsonResponse(data={'msg':'Faltan datos'}, status=400)
+        
+
+        
 

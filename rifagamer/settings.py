@@ -179,3 +179,5 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 LOGIN_URL = '/dashboard/'
 LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = '/dashboard/'
+
+SECURE_CROSS_ORIGIN_OPENER_POLICY = None

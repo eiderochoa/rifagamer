@@ -23,8 +23,9 @@ def detalles(request,pk):
         try:
             rifa = Rifa.objects.get(id=pk)
             estados = MXEstados.objects.all()
+            bonos = Bono.objects.filter(rifa=rifa)
             if rifa:
-                return render(request, template_name='detalles.html', context={'rifa':rifa, 'estados':estados})
+                return render(request, template_name='detalles.html', context={'rifa':rifa, 'estados':estados, 'bonos':bonos})
             else:
                 return render(request, template_name='rifanotfound.html')
         except ObjectDoesNotExist:

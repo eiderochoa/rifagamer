@@ -11,3 +11,8 @@ class NumerosSerializer(serializers.ModelSerializer):
     class Meta:
         model = Numeros
         fields = '__all__'
+
+class BonoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Bono
+        fields = '__all__'

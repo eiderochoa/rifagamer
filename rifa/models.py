@@ -59,3 +59,10 @@ class Numeros(models.Model):
     principal = models.BooleanField(default=False)
     secundario = models.BooleanField(default=False)
     id_principal = models.IntegerField(default=0, blank=True, null=True)
+
+class Bono(models.Model):
+    rifa = models.ForeignKey(Rifa, on_delete=models.CASCADE, default=1)
+    condiciones = models.CharField(max_length=255, default="Condicion")
+    premio = models.CharField(max_length=200, default="20,000 MXN")
+
+

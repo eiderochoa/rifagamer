@@ -62,10 +62,12 @@
             <p class="text-center mb-0" style="color:white">Con tu boleto liquidado participas por:</p>
             <p class="text-center mb-0" style="color:white"><span style="color:#13b69b; font-family: ChargeVectorBlack;">{{rifa.producto}}</span> - {{rifa.fecha_fin}}</p>
             <div class="col-10 col-lg-4 mt-3 mx-auto">
+                {% if bonos %}
                 <h5 class="text-center" style="color:#13b69b; font-family: ChargeVectorBlack;">BONO</h5>
-                <p class="text-center" style="color:white">SI COMPRASTE 1 BOLETO, PAGAS ANTES DE 12 HRS DE APARTADO Y ERES EL GANADOR TE LLEVAS <span style="color:#13b69b; font-family: ChargeVectorBold;">$50,000 MXN</span></p>
-                <p class="text-center" style="color:white">Ó</p>
-                <p class="text-center" style="color:white">SI COMPRASTE 3 BOLETOS Ó MÁS EL BONO ES DE <span style="color:#13b69b; font-family: ChargeVectorBold;">$80,000 MXN</span> (VÁLIDO HASTA EL 4 DE DICIEMBRE) PAGANDO EN MENOS DE 12 HRS</p>
+                {% for bono in bonos %}
+                <p class="text-center" style="color:white; text-transform: uppercase;">{{bono.condiciones}} <span style="color:#13b69b; font-family: ChargeVectorBold;">{{bono.premio}}</span></p>
+                {% endfor %}
+                {% endif %}
             </div>
             <hr>
         </div>
@@ -439,6 +441,7 @@
             const form = $("#formSelec");
             var data = new FormData(form[0]);
             var urlAdd = $("#formSelec").attr('action');
+            var cadena = 'Participante:%20'+$('#nombre').val()+'%20'+$('#apellidos').val()+',%20Telf:%20'+$('#numeroWhatsapp').val()+',%20Estado:%20'+$('select[name="mx_stado"] option:selected').text()+'.%20Boletos%20Seleccionados:%20';
            $.ajax({
             url: '{% url 'addparticipante' %}',
             type: "POST",
@@ -451,7 +454,7 @@
                 $.each(boletos, function(i, item){
                     var num = $(item).prop('id').split('-')[0];
                     selecNumeros(data.participante_id,num);
-                    if($('#posibilidades > li').length != 0){
+                    if($('#posibilidades > li').length != 0){                        
                         var texto = $('#'+$(this).text()+'-p').text().split('->')[1];
                         texto.split(',').forEach(num1=>{
                             console.log("Writing -> "+data.participante_id+" -"+num1+" - "+num);
@@ -466,6 +469,15 @@
                     }
                     
                 });
+                if($('#posibilidades > li').length != 0){
+                    $('#posibilidades > li').each(function(i, item){
+                        cadena = cadena +'%20'+ $(this).text(); 
+                    });
+                }else if($('#posibilidadesModal > li').length != 0){
+                    $('#posibilidadesModal > li').each(function(i, item){
+                        cadena = cadena +'%20'+ $(this).text();
+                    });
+                }
                 $('#formSelec').trigger('reset');
                 $('#selectForm').modal('hide');
                 $('#modalSuccess').modal('show');
@@ -474,7 +486,10 @@
                 }, 3000);
                 setTimeout(function () {
                     location.reload();
-                }, 4000);                              
+                }, 4000);
+                
+                
+                window.open('https://api.whatsapp.com/send/?phone=5351944880&text='+cadena.replaceAll(' ','%20'), '_blank');                             
                
             },
             error: function(jqXHR, textStatus, errorThrown){

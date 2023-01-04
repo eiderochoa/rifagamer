@@ -73,6 +73,14 @@
                   title="Habilitar/Deshabilitar"
                   ><i class="bi bi-eye-slash-fill"></i
                 ></a>
+                <a
+                  href="{% url 'updaterifa' rifa.id %}"
+                  class="btn btn-outline-primary"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  title="Actualizar"
+                  ><i class="bi bi-pencil-square"></i>
+                </a>
               </td>
             </tr>
             {% endfor %}
