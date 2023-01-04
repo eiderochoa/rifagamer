@@ -53,7 +53,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     #Channels
-    'channels',
+    # 'channels',
     # Rest Framework
     'rest_framework',
     # Celery apps
@@ -173,8 +173,8 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Celery Settings
-BROKER_URL = 'redis://localhost:6379'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+# BROKER_URL = 'redis://localhost:6379'
+# CELERY_RESULT_BACKEND = 'redis://localhost:6379'
 
 LOGIN_URL = '/dashboard/'
 LOGIN_REDIRECT_URL = '/dashboard/'
