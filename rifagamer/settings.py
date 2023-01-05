@@ -181,3 +181,4 @@ LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = '/dashboard/'
 
 SECURE_CROSS_ORIGIN_OPENER_POLICY = None
+CSRF_TRUSTED_ORIGINS = ['https://*.onat.gob.cu','http://*.127.0.0.1','http://*.onat.gob.cu']
