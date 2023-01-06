@@ -204,6 +204,9 @@
           <button style="color:white" type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
+          {% comment %} <button style="color:white" type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button> {% endcomment %}
         </div>
         <div class="modal-body">
             <p class="text-center" style="font-family: ChargeVectorBlack; color:#9558b6">Escriba cuantos boletos desea.</p>
@@ -396,7 +399,9 @@
     }
     // Eliminar posibilidades //
     function delPosibilidades(b){
-        var li = document.getElementById(b);
+        var id =  b+'-p';
+        console.log(b);
+        var li = document.getElementById(b+"-p");
         var texto = li.innerText;
         var spl = texto.split("->")[1];
         var arr = spl.split(",");
@@ -481,15 +486,18 @@
                 $('#formSelec').trigger('reset');
                 $('#selectForm').modal('hide');
                 $('#modalSuccess').modal('show');
+
+                //window.open('https://api.whatsapp.com/send/?phone=5351944880&text='+cadena.replaceAll(' ','%20'), '_blank'); 
                 setTimeout(function () {
                     $('#modalSuccess').modal('hide');
                 }, 3000);
+                location = 'https://api.whatsapp.com/send/?phone=5351944880&text='+cadena.replaceAll(' ','%20');
                 setTimeout(function () {
-                    location.reload();
+                    //location.reload();
                 }, 4000);
                 
                 
-                window.open('https://api.whatsapp.com/send/?phone=5351944880&text='+cadena.replaceAll(' ','%20'), '_blank');                             
+                                            
                
             },
             error: function(jqXHR, textStatus, errorThrown){
