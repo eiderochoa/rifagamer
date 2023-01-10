@@ -1,0 +1,208 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block menu %}
+<nav class="navbar navbar-expand-lg navbar-dark" style="background: linear-gradient(90deg, rgba(44,73,90,1) 0%, rgba(60,201,190,1) 33%, rgba(144,89,180,1) 100%);">
+    <a class="navbar-brand d-lg-none" href="#">Menú</a>
+    <button class="navbar-toggler" style="color:white" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link scroll" href="{% url 'index' %}#inicio">INICIO <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link scroll" href="{% url 'index' %}#preguntasFrecuentes">PREGUNTAS FRECUENTES</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link scroll" href="{% url 'index' %}#acercaNosotros">ACERCA DE NOSOTROS</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link scroll" href="{% url 'index' %}#contacto">CONTÁCTANOS</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link scroll" href="{% url 'index' %}#contacto">CHECA TU BOLETO</a>
+          </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+{% endblock menu %}
+{% block content %}
+<div class="container-fluid bg-rifagamer" style="padding-left:0;padding-right:0;">
+    <hr>
+    <!--Encabezado-->
+    <div class="col-10 col-lg-6 ml-auto" style="padding-right:0;">
+        <div class="position-relative">
+          <div class="col-12 borde-derecho">
+            <h6 class="p-2">a </h6>
+          </div>
+          <div class="col-12 bg-section-derecho position-absolute">
+            <h5 class="p-2 text-enacabezado">Comprueba tu boleto</h5>
+          </div>
+        </div>
+    </div>
+    <!--Producto-->
+    <div class="col-10 col-lg-6 mt-3 mx-auto">
+        <h4 class="text-center" style="font-family: ChargeVectorBold; color:#9558b6">Para {{rifa.producto}}</h4>
+    </div>
+    <!--Boleto-->
+    <div class="collapse" id="boleto">
+        <div class="col-11 col-lg-4 mx-auto">
+            <div class="card card-body bordered-container" style="padding-top: 0;
+            padding-right: .9rem;
+            padding-bottom: 0;
+            padding-left: .9rem;">
+                <div class="row">
+                    <div class="col-11  mx-auto">
+                        <div class="col-4 mx-auto mt-3">
+                            <img class="img-fluid" src="{% static 'img/logo.png' %}">
+                        </div>  
+                        <hr style="border-color:white;border-style: dashed;">
+                        <div class="row"  style="color: white">
+                            <div class="col-4">
+                                <h5 style="font-family: ChargeVectorBlack; color:#13b69b">Boleto:</h5>
+                            </div>
+                            <div class="col-8 text-center">
+                                <p id="num_boleto" style="font-weight: bold; font-size: 1.5rem; margin-bottom:0.1rem">00015</p>
+                                <p id="boletos_gratis">00124,13681,12456</p>
+                            </div>
+                        </div>
+                        <hr style="border-color:white;border-style: dashed;margin-top:0.1rem">
+                        <div class="row"  style="color: white">
+                            <div class="col-5">
+                                <h5 style="font-family: ChargeVectorBlack; color:#13b69b; font-size:1rem">Sorteo:</h5>
+                            </div>
+                            <div class="col-7">
+                                <p style="font-weight: bold; font-size: 1rem;">{{rifa.producto}}</p>                                
+                            </div>
+                        </div>
+                        <div class="row"  style="color: white">
+                            <div class="col-5">
+                                <h5 style="font-family: ChargeVectorBlack; color:#13b69b; font-size:1rem">Nombre:</h5>
+                            </div>
+                            <div class="col-7">
+                                <p id="nombre" style="font-weight: bold; font-size: 1rem;">Eider</p>                                
+                            </div>
+                        </div>
+                        <div class="row"  style="color: white">
+                            <div class="col-5">
+                                <h5 style="font-family: ChargeVectorBlack; color:#13b69b; font-size:1rem">Apellidos:</h5>
+                            </div>
+                            <div class="col-7">
+                                <p id="apellidos" style="font-weight: bold; font-size: 1rem;">Ochoa Enriquez</p>                                
+                            </div>
+                        </div>
+                        <div class="row"  style="color: white">
+                            <div class="col-5">
+                                <h5 style="font-family: ChargeVectorBlack; color:#13b69b; font-size:1rem">Estado:</h5>
+                            </div>
+                            <div class="col-7">
+                                <p id="estado" style="font-weight: bold; font-size: 1rem;">Jalisco</p>                                
+                            </div>
+                        </div>
+                        <div class="row"  style="color: white">
+                            <div class="col-5">
+                                <h5 style="font-family: ChargeVectorBlack; color:#13b69b; font-size:1rem">Pagado:</h5>
+                            </div>
+                            <div class="col-7">
+                                <p id="pagado" style="font-weight: bold; font-size: 1rem;">Pagado</p>                                
+                            </div>
+                        </div>
+                        <div class="row"  style="color: white">
+                            <div class="col-5">
+                                <h5 style="font-family: ChargeVectorBlack; color:#13b69b; font-size:1rem">Compra:</h5>
+                            </div>
+                            <div class="col-7">
+                                <p id="fecha" style="font-weight: bold; font-size: 1rem;">Fecha</p>                                
+                            </div>
+                        </div>                        
+                    </div>
+                    <div class="col-12 mx-auto bordered-container" style="padding-left:0;padding-right:0;">
+                        <div id="imagen" class="p-2">
+                            <img class="img-fluid" src="/media/{{rifa.producto.imagen}}" width="100%">
+                        </div>
+                    </div>
+                    <div class="col-12 text-center mt-2">
+                        <h5 style="font-family: ChargeVectorBlack; color:#9558b6;">MUCHA SERTE!</h5>                    
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    <!--Indicaciones-->
+    <div class="col-10 col-lg-6 mt-3 mx-auto">
+        <h6 class="text-center" style="font-family: ChargeVector; color:#efc405">Escriba el número de su boleto y presione en buscar.</h6>
+    </div>
+    <!--Formulario de busqueda-->
+    <div class="col-10 col-lg-6 mt-3 mx-auto">
+        <form id="formCheckBoleto" class="form-inline justify-content-center" action="{% url 'chkboleto' %}" method="POST">
+            <div class="form-group mx-sm-3 mb-2">
+              <label for="inputBoleto" class="sr-only">Boleto</label>
+              <input type="text" class="form-control" id="inputBoleto" name="num_boleto" placeholder="Boleto">              
+            </div>
+            <input type="hidden" name="rifa_id" value="{{rifa.id}}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary mb-2">Buscar</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}
+{% block script %}
+<script>
+$(document).ready(function(){
+    $('#formCheckBoleto').submit(function(e){
+        e.preventDefault();
+        const form = $("#formCheckBoleto");
+        var data = new FormData(form[0]);
+        var urlAdd = $("#formCheckBoleto").attr('action');
+        $.ajax({
+            url: urlAdd,
+            type: "POST",
+            data: data,
+            processData: false,
+            contentType: false,
+            dataType: "json",
+            success: function(data, textStatus, jqXHR){
+                if(data.msg == "Done"){
+                    $('#num_boleto').text(data.boleto['numero']);
+                    var list = "";
+                    $.each(data.boletos, function(i, item){
+                        if((i+1) == data.boletos.length){
+                            list = list + item.numero;
+                        }else{
+                            list = list + item.numero+','
+                        }
+                    });
+                    $('#boletos_gratis').text(list);
+                    $('#nombre').text(data.participante['nombre']);
+                    $('#apellidos').text(data.participante['apellidos']);
+                    $('#estado').text(data.participante['mx_stado']);
+                    if(data.boleto['pagado']){
+                        $('#pagado').text("Pagado");
+                        fecha = data.boleto['fecha_pagado'].split('T')[0];
+                        hora = data.boleto['fecha_pagado'].split('T')[1].split('.')[0];
+                        $('#fecha').text(fecha+' '+hora);
+                    }else{
+                        $('#pagado').text("Por Pagar");
+                        $('#fecha').text("-");
+                    }
+                    if(!$('#boleto').hasClass('show')){
+                        $('#boleto').collapse('show');
+                    }
+                }
+                                   
+               
+            },
+            error: function(jqXHR, textStatus, errorThrown){                  
+               if(jqXHR.status == 404){
+                location = "{% url 'notfound' %}";
+               }
+                
+            }
+        });
+    });
+});
+</script>
+{% endblock script %}

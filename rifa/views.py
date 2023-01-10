@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
-from .serializers import NumerosSerializer, RifaSerializer
+from .serializers import NumerosSerializer, RifaSerializer, ParticipanteSerializer
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
@@ -135,5 +135,40 @@ def vincularPosibilidades(request):
 
     else:
         return JsonResponse(data={'msg':'Metodo no permitido'}, status=400)
+
+def showChecarBoleto(request, pk):
+    if pk:
+        rifa = Rifa.objects.get(id=pk)
+        return render(request, template_name="checatuboleto.html", context={'rifa':rifa})
+    else:
+        return JsonResponse(data={'msg':'Faltan datos'}, status=400)
+
+def checkarBoleto(request):
+    if request.method == "POST":
+        if request.POST.get('num_boleto') != "":
+            rifa = Rifa.objects.get(id=request.POST.get('rifa_id'))
+            if rifa.stado == '1':
+                rifa_serialized = RifaSerializer(rifa, many=False)
+                boleto = Numeros.objects.filter(rifa=rifa).filter(numero=request.POST.get('num_boleto')).first()
+                boleto_serialized = NumerosSerializer(boleto, many=False)
+                participante = boleto.participante
+                participante_serialized = ParticipanteSerializer(participante, many=False)
+                boletos = Numeros.objects.filter(id_principal=boleto.id)
+                boletos_serialized = NumerosSerializer(boletos, many=True)
+                return JsonResponse(data={'msg':'Done', 
+                'boleto':boleto_serialized.data, 
+                'participante':participante_serialized.data, 
+                'boletos':boletos_serialized.data, 
+                'rifa':rifa_serialized.data}, status=200)
+            else:
+                return JsonResponse(data={'msg':'Close'}, status=404)
+        else:
+            return JsonResponse(data={'msg':'Faltan datos'}, status=400)
+    else:
+        return JsonResponse(data={'msg':'Método no permitido'}, status=400)
+
+def notFound(request):
+    return render(request, template_name='rifanotfound.html')
+
 
 

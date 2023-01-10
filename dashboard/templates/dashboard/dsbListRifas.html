@@ -41,18 +41,27 @@
             <tr>
               <th>No.</th>
               <th>Producto</th>
+              <th>Fecha Inicio</th>
               <th>Fecha Fin</th>
+              <th>No. Oportunidades</th>
+              <th>No. Boletos</th>
+              <th>Precio Boleto</th>
               <th>Stado</th>
               <th>ID</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
+            {% if object_list %}
             {% for rifa in object_list %}
             <tr>
               <td>{{forloop.counter}}</td>
               <td>{{rifa.producto}}</td>
+              <td>{{rifa.fecha_inicio}}</td>
               <td>{{rifa.fecha_fin}}</td>
+              <td>{{rifa.num_posibilidades}}</td>
+              <td>{{rifa.num_boletos}}</td>
+              <td>{{rifa.precio_boleto}}</td>
               <td>
                 {% if rifa.stado == '1' %}Actiba{%else%}Desactivada{% endif %}
               </td>
@@ -85,6 +94,11 @@
               </td>
             </tr>
             {% endfor %}
+            {%else%}
+            <tr><td colspan="10"><div class="alert alert-warning" role="alert">
+              No hay rifas que mostrar.
+            </div></td></tr>
+            {% endif %}
           </tbody>
         </table>
       </div>

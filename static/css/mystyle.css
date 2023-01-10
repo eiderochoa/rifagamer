@@ -134,3 +134,13 @@ footer{
     max-height: 100px; 
     overflow: auto;
 }
+
+.text-enacabezado{
+    font-family: ChargeVectorBlack;
+    font-weight: bold;
+
+}
+.hr-disc{
+    border-bottom: #fff 2px;
+   
+}

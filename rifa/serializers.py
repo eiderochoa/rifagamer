@@ -16,3 +16,9 @@ class BonoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bono
         fields = '__all__'
+
+class ParticipanteSerializer(serializers.ModelSerializer):
+    mx_stado = serializers.StringRelatedField()
+    class Meta:
+        model = Participante
+        fields = '__all__'

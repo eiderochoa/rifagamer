@@ -61,14 +61,15 @@ class DsbListRifas(PermissionRequiredMixin,ListView):
         return context
 
     def get_queryset(self):
-        queryset = Rifa .objects.all().order_by('-id')           
+        queryset = Rifa .objects.all().order_by('-id')         
         return queryset
 
-@login_required
-@permission_required('rifa.view_rifa')    
-def dsbListRifas(request):
-    rifas = Rifa.objects.all()
-    return render(request, template_name="dashboard/dsbListRifas.html", context={'rifas':rifas})
+# @login_required
+# @permission_required('rifa.view_rifa')    
+# def dsbListRifas(request):
+#     rifas = Rifa.objects.all()
+#     rifos = Rifa.objects.filter(id=0)
+#     return render(request, template_name="dashboard/dsbListRifas.html", context={'rifas':rifos})
 
 @login_required
 @permission_required('rifa.delete_rifa')
@@ -109,11 +110,12 @@ def dsbSaveRifas(request):
         fecha = request.POST.get('daterange')
         num_posibilidades = request.POST.get('num_posibilidades')
         num_boletos = request.POST.get('num_boletos')
+        precio_boleto = request.POST.get('precio_boleto')
         fechaArray = fecha.split()
-        if imagen != "" and descripccion != "" and fecha !="" and num_posibilidades != "" and num_boletos != "":
+        if imagen != "" and descripccion != "" and fecha !="" and num_posibilidades != "" and num_boletos != "" and precio_boleto != "":
             producto = Producto(nombre=descripccion, imagen= imagen, activo=True)
             producto.save()
-            rifa = Rifa(producto=producto,fecha_inicio=fechaArray[0], fecha_fin=fechaArray[2],num_posibilidades=num_posibilidades, num_boletos=num_boletos)
+            rifa = Rifa(producto=producto,fecha_inicio=fechaArray[0], fecha_fin=fechaArray[2],num_posibilidades=num_posibilidades, num_boletos=num_boletos, precio_boleto=precio_boleto)
             rifa.save()
             # channel_layer = get_channel_layer()  
             batch_size = 1000      
@@ -150,7 +152,7 @@ def dsbSaveRifas(request):
 
             return JsonResponse(data={'msg':'Done', 'id_rifa':rifa.id}, status=201)
         else:
-            return JsonResponse(data={'msg':'Error'}, status=400)
+            return JsonResponse(data={'msg':'Llene los campos vacios.'}, status=400)
 
 @login_required
 @permission_required('rifa.can_view_rifa')

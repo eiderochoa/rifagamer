@@ -45,6 +45,7 @@ class Rifa(models.Model):
     stado = models.CharField(max_length=1, choices=STADO, default='1')
     num_posibilidades = models.IntegerField(default=1)
     num_boletos = models.IntegerField(default=10000)
+    precio_boleto = models.FloatField(default=199)
     
 
 class Numeros(models.Model):
@@ -64,5 +65,8 @@ class Bono(models.Model):
     rifa = models.ForeignKey(Rifa, on_delete=models.CASCADE, default=1)
     condiciones = models.CharField(max_length=255, default="Condicion")
     premio = models.CharField(max_length=200, default="20,000 MXN")
+
+# class CuentaBanco(models.Model):
+
 
 

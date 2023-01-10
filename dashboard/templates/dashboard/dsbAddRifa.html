@@ -59,6 +59,10 @@
                             <label for="inputBoletos" class="form-label">Número de Boletos</label>
                             <input type="text" class="form-control" name="num_boletos" id="inputBoletos" required >
                         </div>
+                        <div class="mb-3 col-lg-4 col-md-12">
+                            <label for="inputPrecioBoletos" class="form-label">Precio de Boleto</label>
+                            <input type="text" class="form-control" name="precio_boleto" id="inputPrecioBoletos" required >
+                        </div>
                         <div class="mb-3 col-lg-12 col-md-12 collapse" id="collapseProgressBar">
                             <div class="card card-body text-center">
                                 <h6>Generando boletos...</h6>
@@ -163,6 +167,7 @@
                 contentType: false,
                 dataType: "json",
                 success: function(data, textStatus, jqXHR){
+                    console.log(textStatus);
                     if(data.msg == 'Done'){
                         id_new_rifa = data.id_rifa;
                         $('#collapseProgressBar').collapse('hide');

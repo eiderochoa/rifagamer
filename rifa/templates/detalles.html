@@ -22,6 +22,9 @@
         <li class="nav-item">
           <a class="nav-link scroll" href="{% url 'index' %}#contacto">CONTÁCTANOS</a>
         </li>
+        <li class="nav-item">
+            <a class="nav-link scroll" href="{% url 'checarboleto' rifa.id%}">CHECA TU BOLETO</a>
+          </li>
       </ul>
     </div>
   </nav>
@@ -32,14 +35,14 @@
     <div class="container-fluid bg-rifagamer" style="padding-left:0;padding-right:0;">
         <hr>
         <div class="position-relative">
-        <div class="col-10 col-lg-6 borde">
-            <h5>n</h5>
-            <h6>F</h6>
-        </div>
-        <div class="col-10 col-lg-6 bg-section position-absolute">
-            <h5>{{rifa.producto}}</h5>
-            <h6>{{rifa.fecha_fin}}</h6>
-        </div>
+            <div class="col-10 col-lg-6 borde">
+                <h5>n</h5>
+                <h6>F</h6>
+            </div>
+            <div class="col-10 col-lg-6 bg-section position-absolute">
+                <h5>{{rifa.producto}}</h5>
+                <h6>{{rifa.fecha_fin}}</h6>
+            </div>
         </div>
         <hr>
         <div class="col-10 col-lg-6 mx-auto bordered-container" style="padding-left:0;padding-right:0;">
@@ -49,14 +52,14 @@
         </div>
         <hr>
         <div class="col-11 mx-auto text-center">
-            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#dd5834">1</span> BOLETO POR $185 ({{rifa.num_posibilidades|calculate:1}} oportunidades)</p>
-            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#13b69b">2</span> BOLETOS POR $369 ({{rifa.num_posibilidades|calculate:2}} oportunidades)</p>
-            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#9558b6">3</span> BOLETOS POR $549 ({{rifa.num_posibilidades|calculate:3}} oportunidades)</p>
-            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#efc405">5</span> BOLETOS POR $909 ({{rifa.num_posibilidades|calculate:5}} oportunidades)</p>
-            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#dd5834">10</span> BOLETOS POR $1,809 ({{rifa.num_posibilidades|calculate:10}} oportunidades)</p>
-            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#13b69b">20</span> BOLETOS POR $3,599 ({{rifa.num_posibilidades|calculate:20}} oportunidades)</p>
-            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#9558b6">30</span> BOLETOS POR $5,349 ({{rifa.num_posibilidades|calculate:30}} oportunidades)</p>
-            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#efc405">50</span> BOLETOS POR $8,849 ({{rifa.num_posibilidades|calculate:50}} oportunidades)</p>
+            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#dd5834">1</span> BOLETO POR ${{rifa.precio_boleto}} ({{rifa.num_posibilidades|calculate:1}} oportunidades)</p>
+            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#13b69b">2</span> BOLETOS POR ${%percent rifa.precio_boleto 99.25 2 %} ({{rifa.num_posibilidades|calculate:2}} oportunidades)</p>
+            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#9558b6">3</span> BOLETOS POR ${% percent rifa.precio_boleto 98.66 3 %} ({{rifa.num_posibilidades|calculate:3}} oportunidades)</p>
+            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#efc405">5</span> BOLETOS POR ${% percent rifa.precio_boleto 91.35 5%} ({{rifa.num_posibilidades|calculate:5}} oportunidades)</p>
+            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#dd5834">10</span> BOLETOS POR ${% percent rifa.precio_boleto 90.90 10%} ({{rifa.num_posibilidades|calculate:10}} oportunidades)</p>
+            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#13b69b">20</span> BOLETOS POR ${% percent rifa.precio_boleto 90.42 20%} ({{rifa.num_posibilidades|calculate:20}} oportunidades)</p>
+            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#9558b6">30</span> BOLETOS POR ${% percent rifa.precio_boleto 89.59 30%} ({{rifa.num_posibilidades|calculate:30}} oportunidades)</p>
+            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#efc405">50</span> BOLETOS POR ${% percent rifa.precio_boleto 88.93 50%} ({{rifa.num_posibilidades|calculate:50}} oportunidades)</p>
         </div>
         <div class="container-fluid mt-3 pt-3" style="padding-left:0;padding-right:0; background-color: #9457b6">
             <p class="text-center mb-0" style="color:white">Con tu boleto liquidado participas por:</p>
@@ -491,10 +494,10 @@
                 setTimeout(function () {
                     $('#modalSuccess').modal('hide');
                 }, 3000);
-                location = 'https://api.whatsapp.com/send/?phone=5351944880&text='+cadena.replaceAll(' ','%20');
-                setTimeout(function () {
+                location = 'https://api.whatsapp.com/send/?phone=528126475803&text='+cadena.replaceAll(' ','%20');
+                //setTimeout(function () {
                     //location.reload();
-                }, 4000);
+                //}, 4000);
                 
                 
                                             
@@ -506,7 +509,7 @@
                
                 
             }
-        })
+            })
         });
 
         $('#btnRandom').click(function(){
