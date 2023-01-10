@@ -1,0 +1,182 @@
+{% extends 'dashboard/index.html' %}
+{% load static %}
+{% block menusidebar %}
+                  <li class="nav-item">         
+                    <a href="{% url 'dshbindex' %}" class="nav-link text-white" aria-current="page">
+                      <i class="bi bi-speedometer me-3"></i>
+                      <span class="align-middle">Dashboard</span>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{% url 'listrifas' %}" class="nav-link text-white">
+                      <i class="bi bi-8-circle-fill me-3"></i>
+                      <span class="align-middle">Rifas</span>
+                    </a>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a href="#" class="nav-link text-white dropdown-toggle" role="button" data-toggle="dropdown" aria-expanded="false">
+                      <i class="bi bi-cash-coin me-3"></i>
+                      <span class="align-middle">Boletos</span>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{% url 'showboletospagados' %}">Pagados</a>
+                        <a class="dropdown-item" href="{% url 'showboletosxpagar' %}">Por Pagar</a>
+                    </div>
+                  </li>
+                  <li class="nav-item">
+                    <a href="{% url 'listcuentas' %}" class="nav-link text-white  active">
+                        <i class="bi bi-piggy-bank-fill"></i>
+                      <span class="align-middle">Cuentas</span>
+                    </a>
+                  </li>
+{% endblock menusidebar %}
+{% block contentright %}
+<div class="col-12 mt-3">
+    
+    <div class="col-12 pb-3">
+      <button class="btn btn-success" data-toggle="modal" data-target="#formAddCuenta"><i class="bi bi-plus-circle"></i> Nueva Cuenta</button>
+    </div> 
+    <div class="card"> 
+      <div class="card-header">
+        <h5>Lista de Cuentas Bancarias</h5>
+      </div>
+      <div class="card-body">
+        <div class="row" style="margin-right: 0; margin-left: 0">
+          <div class="table-responsive">
+          <table class="table table-bordered">
+            <thead class="table-light">
+              <tr>
+                <th>No.</th>
+                <th>No. Cuenta</th>
+                <th>Nombre</th>
+                <th>Banco</th>
+                <th>Tipo Transacción</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if object_list %}
+              {% for cuenta in object_list %}
+              <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{cuenta.num_cuenta}}</td>
+                <td>{{cuenta.nombre}}</td>
+                <td>{{cuenta.banco}}</td>
+                <td>{% if tipo_transaccion == '1' %}Trnasferencia y Cajero{%else%}OXXO y Seven{% endif %}</td>
+                <td>
+                  <a
+                    href="{% url 'delrifa' rifa.id %}"
+                    class="btn btn-outline-danger"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    title="Eliminar"
+                    ><i class="bi bi-trash3-fill"></i
+                  ></a>
+                  <a
+                    href="{% url 'disrifa' rifa.id %}"
+                    class="btn btn-outline-primary"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    title="Habilitar/Deshabilitar"
+                    ><i class="bi bi-eye-slash-fill"></i
+                  ></a>
+                  <a
+                    href="{% url 'updaterifa' rifa.id %}"
+                    class="btn btn-outline-primary"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    title="Actualizar"
+                    ><i class="bi bi-pencil-square"></i>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+              {%else%}
+              <tr><td colspan="10"><div class="alert alert-warning" role="alert">
+                No hay rifas que mostrar.
+              </div></td></tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+          <div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="dtBasicExample_paginate">
+              <ul class="pagination">
+                  {%if page_obj.has_previous%}
+                  <li class="paginate_button page-item previous" id="dtBasicExample_previous">
+                      <a href="?page={{page_obj.previous_page_number}}" aria-controls="dtBasicExample" data-dt-idx="0" tabindex="0" class="page-link">Anterior</a>
+                  </li>
+                  {% else %}
+                  <li class="paginate_button page-item previous disabled" id="dtBasicExample_previous">
+                      <a href="#" aria-controls="dtBasicExample" data-dt-idx="0" tabindex="0" class="page-link">Anterior</a>
+                  </li>
+                  {%endif%}
+                  {%for i in page_obj.paginator.page_range %}
+                      {%if i == page_obj.number%}
+                          <li class="paginate_button page-item active">
+                              <a href="#" aria-controls="dtBasicExample" data-dt-idx="1" tabindex="0" class="page-link">{{i}}</a>
+                          </li>
+                      {%else%}
+                          <li class="paginate_button page-item ">
+                              <a href="?page={{i}}" aria-controls="dtBasicExample" data-dt-idx="2" tabindex="0" class="page-link">{{i}}</a>
+                          </li>
+                      {% endif%}
+                  {%endfor%}
+                  {%if page_obj.has_next%}
+                  <li class="paginate_button page-item next" id="dtBasicExample_next">
+                      <a href="?page={{page_obj.next_page_number}}" aria-controls="dtBasicExample" data-dt-idx="7" tabindex="0" class="page-link">Siguiente</a>
+                  </li>
+                  {%else%}
+                  <li class="paginate_button page-item next disabled" id="dtBasicExample_next">
+                      <a href="#" aria-controls="dtBasicExample" data-dt-idx="7" tabindex="0" class="page-link">Siguiente</a>
+                  </li>
+                  {%endif%}
+  
+              </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+<!--Modal formulario-->
+<div class="modal fade" tabindex="-1" id="formAddCuenta">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Nueva Cuenta Bancaria</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form>
+        <div class="modal-body">
+            
+                <div class="form-group">
+                  <label for="inputNoCuenta">Número de Cuenta</label>
+                  <input type="text" class="form-control" name="num_cuenta" id="inputNoCuenta" placeholder="0000 0000 0000 0000" required>
+                </div>
+                <div class="form-group">
+                    <label for="inputNombre">Nombre y Apellidos</label>
+                    <input type="text" class="form-control" name="nombre" id="inputNombre" placeholder="Alberto Perez Estrada">
+                </div>
+                <div class="form-group">
+                    <label for="inputBanco">Banco</label>
+                    <input type="text" class="form-control" name="banco" id="inputBanco" placeholder="BBVA" required>
+                  </div>
+                <div class="form-group">
+                  <label for="tipo_transaccion">Tipo de Transacciones</label>
+                  <select class="form-control" id="tipo_transaccion" name="tipo_transaccion" required>
+                    <option selected>Escojer Tipo de Transaccion</option>
+                    <option value="1">Trasferencia y Cajero</option>
+                    <option value="2">OXXO y Seven</option>
+                  </select>
+                </div>
+              
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary">Guardar</button>
+        </div>
+    </form>
+      </div>
+    </div>
+  </div>
+{% endblock contentright %}

@@ -392,6 +392,11 @@ def saveUpdatedRifa(request):
         else:
             return JsonResponse(data={'msg':'Faltan datos'}, status=400)
         
-
-        
+def listCuentasBanco(request):
+    cuentas = CuentaBanco.objects.all()
+    return render(request, template_name="dashboard/dsbListCuentasBanco.html", context={'cuentas':cuentas})
+class ListCuentasBanco(ListView):
+    model = CuentaBanco
+    template_name = "dashboard/dsbListCuentasBanco.html"
+    paginate_by = 10     
 

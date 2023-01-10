@@ -27,5 +27,6 @@ urlpatterns = [
     path("addbono/", addBono, name="addbono"),
     path("delbono/<int:pk>/<int:id_rifa>", delBono, name="delbono"),
     path("updaterifa/<int:pk>", updateRifa, name="updaterifa"),
-    path("saveupdatedrifa/", saveUpdatedRifa, name="saveupdatedrifa")
+    path("saveupdatedrifa/", saveUpdatedRifa, name="saveupdatedrifa"),
+    path("listcuentas/", ListCuentasBanco.as_view(), name="listcuentas")
 ]

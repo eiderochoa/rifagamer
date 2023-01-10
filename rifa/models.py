@@ -66,7 +66,17 @@ class Bono(models.Model):
     condiciones = models.CharField(max_length=255, default="Condicion")
     premio = models.CharField(max_length=200, default="20,000 MXN")
 
-# class CuentaBanco(models.Model):
+class CuentaBanco(models.Model):
+    TIPO_TRANSACCION = (
+        ('1', 'Trasferencia y Cajero'),
+        ('2', 'OXXO y Seven')
+    )
+    num_cuenta = models.CharField(max_length=12)
+    nombre = models.CharField(max_length=255, null=True, blank=True)
+    banco = models.CharField(max_length=50)
+    tipo_transaccion = models.CharField(max_length=1, choices=TIPO_TRANSACCION)
+
+
 
 
 
