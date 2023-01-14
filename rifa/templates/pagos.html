@@ -52,31 +52,43 @@
             <h6 style="color: #dd5834; font-family: ChargeVectorBlack; text-transform:uppercas;">exclusivo transferencias y cajero</h6>
             <h5 style="color: white; font-family: ChargeVector; text-transform:uppercas; font-size: 0.8rem">en concepto de pago: tu nombre</h5>
         </div>
-        <div class="justify-content-start text-start"> 
-            <ul>
-                <li style="color:white"><span style="color:#45b69b; font-family: ChargeVectorBold;text-transform:uppercas;">BANCO:</span> BBVA</li>
-                <li style="color:white"><span style="color:#45b69b; font-family: ChargeVectorBold;text-transform:uppercas;">NOMBRE:</span> NOHEMY J GOMEZ</li>
-                <li style="color:white"><span style="color:#45b69b; font-family: ChargeVectorBold;text-transform:uppercas;">número de tarjeta:</span> 4152 3140 1235 8225</li>
-            </ul>
-        </div>
+        
+          {% if cuentas %}
+            {% for cuenta in  cuentas%}
+              {% if cuenta.tipo_transaccion == "1" %}
+              <div class="justify-content-start text-start"> 
+                <ul class="mt-2">
+                    <li style="color:white"><span style="color:#45b69b; font-family: ChargeVectorBold;text-transform:uppercase;">BANCO:</span> {{cuenta.banco}}</li>
+                    <li style="color:white"><span style="color:#45b69b; font-family: ChargeVectorBold;text-transform:uppercase;">NOMBRE:</span> {{cuenta.nombre}}</li>
+                    <li style="color:white"><span style="color:#45b69b; font-family: ChargeVectorBold;text-transform:uppercase;">número de tarjeta:</span> {{cuenta.num_cuenta}}</li>
+                </ul>
+              </div>
+              {% endif %}
+              
+            {% endfor %}
+          {% endif %}
+            
+        
     </div>
     <div class="col-10 col-lg-4 bordered-container mx-auto mt-3">
         <div class="col-12 mt-2 mx-auto text-center">
             <h6 style="color: #dd5834; font-family: ChargeVectorBlack; text-transform:uppercas;">pago en oxxo, 7eleven, farmacias</h6>
         </div>
         <hr>
-        <div class="justify-content-start text-start"> 
-            <ul>
-                <li style="color:white"><span style="color:#9457b6; font-family: ChargeVectorBold;text-transform:uppercas;">BANCO:</span> BBVA</li>
-                <li style="color:white"><span style="color:#9457b6; font-family: ChargeVectorBold;text-transform:uppercas;">número de tarjeta:</span> 4152 3137 1654 2761 </li>
-            </ul>
-        </div>
-        <div class="justify-content-start text-start"> 
-            <ul>
-                <li style="color:white"><span style="color:#9457b6; font-family: ChargeVectorBold;text-transform:uppercas;">BANCO:</span> BBVA</li>
-                <li style="color:white"><span style="color:#9457b6; font-family: ChargeVectorBold;text-transform:uppercas;">número de tarjeta:</span> 4152 3137 1654 2761 </li>
-            </ul>
-        </div>
+        {% if cuentas %}
+            {% for cuenta in  cuentas%}
+              {% if cuenta.tipo_transaccion == "1" %}
+              <div class="justify-content-start text-start"> 
+                <ul>
+                    <li style="color:white"><span style="color:#9457b6; font-family: ChargeVectorBold;text-transform:uppercas;">BANCO:</span> {{cuenta.banco}}</li>
+                    <li style="color:white"><span style="color:#9457b6; font-family: ChargeVectorBold;text-transform:uppercas;">número de tarjeta:</span> {{cuenta.num_cuenta}} </li>
+                </ul>
+            </div>
+              {% endif %}
+              
+            {% endfor %}
+          {% endif %}        
+        
     </div>
 </div>
 {% endblock content %}

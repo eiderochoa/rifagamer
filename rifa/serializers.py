@@ -22,3 +22,8 @@ class ParticipanteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Participante
         fields = '__all__'
+
+class CuentaBancoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CuentaBanco
+        fields = '__all__'

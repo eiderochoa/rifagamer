@@ -3,7 +3,7 @@ from rifa.models import *
 # from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 from django.http import JsonResponse
-from rifa.serializers import RifaSerializer, BonoSerializer
+from rifa.serializers import RifaSerializer, BonoSerializer, CuentaBancoSerializer
 from django.views.generic import ListView, UpdateView
 from itertools import islice
 from django.core.exceptions import ObjectDoesNotExist
@@ -398,5 +398,60 @@ def listCuentasBanco(request):
 class ListCuentasBanco(ListView):
     model = CuentaBanco
     template_name = "dashboard/dsbListCuentasBanco.html"
-    paginate_by = 10     
+    paginate_by = 10  
+
+def addCuentaBanco(request):
+    if request.method == "POST":
+        num_cuenta = request.POST.get('num_cuenta')
+        nombre = request.POST.get('nombre')
+        banco = request.POST.get('banco')
+        tipo_transaccion = request.POST.get('tipo_transaccion')
+        if num_cuenta != "" and banco != "" and tipo_transaccion != "":
+            cuenta = CuentaBanco(num_cuenta=num_cuenta, nombre=nombre, banco=banco, tipo_transaccion=tipo_transaccion)
+            cuenta.save()
+
+            return JsonResponse(data={'msg':'Done'}, status=201)
+        else:
+            return JsonResponse(data={'msg':'Faltan datos'}, status=400)
+    else:
+        return JsonResponse(data={'msg':'Metodo no permitido'}, status=400)
+def delCuentaBanco(request, pk):
+    if pk:
+        try:
+            cuenta = CuentaBanco.objects.get(id=pk)
+            cuenta.delete()
+            return JsonResponse(data={'msg':'Done'}, status=200)                
+        except ObjectDoesNotExist:
+            return JsonResponse(data={'msg':'La cuenta de banco no existe'}, status=404)
+    else:
+       return JsonResponse(data={'msg':'Faltan datos'}, status=400)
+
+def getCuentaBanco(request, pk):
+    if pk:
+        try:
+            cuenta = CuentaBanco.objects.get(id=pk)
+            cuenta_serialized = CuentaBancoSerializer(cuenta, many=False)
+            return JsonResponse(data={'msg':'Done','cuenta':cuenta_serialized.data}, status=200)                
+        except ObjectDoesNotExist:
+            return JsonResponse(data={'msg':'La cuenta de banco no existe'}, status=404)
+    else:
+       return JsonResponse(data={'msg':'Faltan datos'}, status=400)
+
+def updCuentaBanco(request):
+    if request.method == "POST":
+        try:
+            cuenta = CuentaBanco.objects.get(id=request.POST.get('id_cuenta'))
+            cuenta.num_cuenta = request.POST.get('num_cuenta')
+            cuenta.nombre = request.POST.get('nombre')
+            cuenta.banco = request.POST.get('banco')
+            cuenta.tipo_transaccion = request.POST.get('tipo_transaccion')
+            cuenta.save()
+            return JsonResponse(data={'msg':'Done'}, status=200)  
+        except ObjectDoesNotExist:
+            return JsonResponse(data={'msg':'La cuenta de banco no existe'}, status=404)
+    else:
+        return JsonResponse(data={'msg':'Metodo no permitido'}, status=400)
+
+
+
 

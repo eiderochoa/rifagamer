@@ -71,7 +71,7 @@ class CuentaBanco(models.Model):
         ('1', 'Trasferencia y Cajero'),
         ('2', 'OXXO y Seven')
     )
-    num_cuenta = models.CharField(max_length=12)
+    num_cuenta = models.CharField(max_length=16)
     nombre = models.CharField(max_length=255, null=True, blank=True)
     banco = models.CharField(max_length=50)
     tipo_transaccion = models.CharField(max_length=1, choices=TIPO_TRANSACCION)
