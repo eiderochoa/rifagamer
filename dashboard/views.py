@@ -102,7 +102,7 @@ def dsbShowFormRifas(request):
     return render(request, template_name="dashboard/dsbAddRifa.html")
 
 @login_required
-@permission_required('rifa.can_add_rifa', 'producto.can_add_producto', 'numeros.can_add_numeros')
+@permission_required('rifa.add_rifa', 'rifa.add_producto', 'rifa.add_numeros')
 def dsbSaveRifas(request):
     if request.method == "POST":
         imagen = request.FILES.get('imagen')
@@ -155,12 +155,12 @@ def dsbSaveRifas(request):
             return JsonResponse(data={'msg':'Llene los campos vacios.'}, status=400)
 
 @login_required
-@permission_required('rifa.can_view_rifa')
+@permission_required('rifa.view_rifa')
 def showBoletosPorPagar(request):
     rifas = Rifa.objects.filter(stado='1')
     return render(request, template_name='dashboard/dsbBoletosXPagar.html', context={'rifas':rifas})
 @login_required
-@permission_required('rifa.can_view_rifa','numeros.can_view_numeros')
+@permission_required('rifa.view_rifa','rifa.view_numeros')
 def getBoletos(request, pk):
     if pk:
         try: 
@@ -201,7 +201,7 @@ class NumerosListView(PermissionRequiredMixin,ListView):
 
 
 @login_required
-@permission_required('numeros.can_change_numeros')
+@permission_required('rifa.change_numeros')
 def setBoletoPagado(request, pk):
     if pk:
         try:
@@ -219,7 +219,7 @@ def setBoletoPagado(request, pk):
         except ObjectDoesNotExist:
             return JsonResponse(data={'msg':'Error al guardar los datos'},status=400)
 @login_required
-@permission_required('rifa.can_view_rifa')
+@permission_required('rifa.view_rifa')
 def showBoletosPagados(request):
     rifas = Rifa.objects.filter(stado='1')
     return render(request, template_name='dashboard/dsbBoletosPagados.html', context={'rifas':rifas})
@@ -277,13 +277,14 @@ def addUser(request):
     if request.method == 'GET':
         return render(request, template_name="dashboard/addUser.html")
     elif request.method == 'POST':
-        user = User.objects.create_user(request.POST.get('username'),request.POST.get('email'),request.POST.get('password1'))
+        user = User.objects.create_user(username=request.POST.get('username'),email=request.POST.get('email'),password=request.POST.get('new_password1'))
         user.first_name = request.POST.get('first_name')
         user.last_name = request.POST.get('last_name')
         content_type = ContentType.objects.get_for_model(Rifa)
         content_type1 = ContentType.objects.get_for_model(Numeros)
         content_type2 = ContentType.objects.get_for_model(Producto)
-        content_type3 = ContentType.objects.get_for_model(Participante())
+        content_type3 = ContentType.objects.get_for_model(Participante)
+        content_type4 = ContentType.objects.get_for_model(CuentaBanco)
 
         user.user_permissions.add(
             Permission.objects.get(codename='view_rifa', content_type=content_type),
@@ -295,7 +296,17 @@ def addUser(request):
             Permission.objects.get(codename='delete_numeros', content_type=content_type1),
             Permission.objects.get(codename='add_numeros', content_type=content_type1),
             Permission.objects.get(codename='add_producto', content_type=content_type2),
+            Permission.objects.get(codename='view_producto', content_type=content_type2),
+            Permission.objects.get(codename='delete_producto', content_type=content_type2),
+            Permission.objects.get(codename='change_producto', content_type=content_type2),
             Permission.objects.get(codename='add_participante', content_type=content_type3),
+            Permission.objects.get(codename='view_participante', content_type=content_type3),
+            Permission.objects.get(codename='change_participante', content_type=content_type3),
+            Permission.objects.get(codename='delete_participante', content_type=content_type3),
+            Permission.objects.get(codename='add_cuentabanco', content_type=content_type4),
+            Permission.objects.get(codename='view_cuentabanco', content_type=content_type4),
+            Permission.objects.get(codename='change_cuentabanco', content_type=content_type4),
+            Permission.objects.get(codename='delete_cuentabanco', content_type=content_type4)
             )
         user.save()
         return redirect('listusers')
@@ -392,14 +403,15 @@ def saveUpdatedRifa(request):
         else:
             return JsonResponse(data={'msg':'Faltan datos'}, status=400)
         
-def listCuentasBanco(request):
-    cuentas = CuentaBanco.objects.all()
-    return render(request, template_name="dashboard/dsbListCuentasBanco.html", context={'cuentas':cuentas})
-class ListCuentasBanco(ListView):
+
+class ListCuentasBanco(PermissionRequiredMixin,ListView):
     model = CuentaBanco
     template_name = "dashboard/dsbListCuentasBanco.html"
+    permission_required = ('rifa.view_cuentabanco')
     paginate_by = 10  
 
+@login_required
+@permission_required('rifa.add_cuentabanco')
 def addCuentaBanco(request):
     if request.method == "POST":
         num_cuenta = request.POST.get('num_cuenta')
@@ -415,6 +427,8 @@ def addCuentaBanco(request):
             return JsonResponse(data={'msg':'Faltan datos'}, status=400)
     else:
         return JsonResponse(data={'msg':'Metodo no permitido'}, status=400)
+@login_required
+@permission_required('rifa.delete_cuentabanco')
 def delCuentaBanco(request, pk):
     if pk:
         try:
@@ -425,7 +439,8 @@ def delCuentaBanco(request, pk):
             return JsonResponse(data={'msg':'La cuenta de banco no existe'}, status=404)
     else:
        return JsonResponse(data={'msg':'Faltan datos'}, status=400)
-
+@login_required
+@permission_required('rifa.view_cuentabanco')
 def getCuentaBanco(request, pk):
     if pk:
         try:
@@ -436,7 +451,8 @@ def getCuentaBanco(request, pk):
             return JsonResponse(data={'msg':'La cuenta de banco no existe'}, status=404)
     else:
        return JsonResponse(data={'msg':'Faltan datos'}, status=400)
-
+@login_required
+@permission_required('rifa.change_cuentabanco')
 def updCuentaBanco(request):
     if request.method == "POST":
         try:
