@@ -1,0 +1,24 @@
+<<<<<<< HEAD
+psql postgres Masterserver,.12
+
+postgres=# CREATE DATABASE rifasdb;
+
+postgres=# CREATE USER rifasuser;
+
+postgres=# GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public to rifasuser;
+postgres=# GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public to rifasuser;
+postgres=# GRANT ALL PRIVILEGES ON ALL FUNCTIONS IN SCHEMA public to rifasuser;
+
+=======
+psql postgres Masterserver,.12
+
+postgres=# CREATE DATABASE rifasdb;
+
+postgres=# CREATE USER rifasuser;
+
+postgres=# GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public to rifasuser;
+postgres=# GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public to rifasuser;
+postgres=# GRANT ALL PRIVILEGES ON ALL FUNCTIONS IN SCHEMA public to rifasuser;
+
+>>>>>>> 05a36f99675bd517d8e5703eef2d7c3c098365be
+postgres=# GRANT ALL PRIVILEGES ON DATABASE rifasdb TO rifasuser;
