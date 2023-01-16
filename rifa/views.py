@@ -16,7 +16,8 @@ def index(request):
     return render(request, template_name='index.html', context={'rifas':rifas})
 
 def pagos(request):
-    return render(request, template_name='pagos.html')
+    cuentas = CuentaBanco.objects.all()
+    return render(request, template_name='pagos.html', context={'cuentas':cuentas})
 
 def avisoPrivacidad(request):
     return render(request, template_name='aviso-privacidad.html')
