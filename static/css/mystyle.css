@@ -134,6 +134,7 @@ footer{
     max-height: 100px; 
     overflow: auto;
 }
+
 .text-enacabezado{
     font-family: ChargeVectorBlack;
     font-weight: bold;
@@ -143,3 +144,25 @@ footer{
     border-bottom: #fff 2px;
    
 }
+
+#avisoPrivacidad h3{
+    text-align: center; 
+    text-decoration: underline; 
+    margin-top: 3rem; 
+    text-transform: uppercase;
+    font-family: ChargeVectorBlack;
+    color: #45b69b;
+}
+
+#avisoPrivacidad p{
+    text-align: center; 
+    margin-top: 30px; 
+    line-height: 1.5rem;
+    font-size: 1rem;
+}
+
+#avisoPrivacidad p:first-letter {
+    text-transform: uppercase;
+} 
+
+
