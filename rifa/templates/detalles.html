@@ -547,10 +547,12 @@
 
         });
         $('#selectForm').on('hidden.bs.modal', function (event) {
-            num_posibilidades = 0;
-            $('#btnContainer').empty();
+            location.reload();         
 
-          })
+          });
+        $('#maquinita').on('hidden.bs.modal', function(event){
+            location.reload();
+        });
 
     });
     
