@@ -154,16 +154,22 @@ def checkarBoleto(request):
             if rifa.stado == '1':
                 rifa_serialized = RifaSerializer(rifa, many=False)
                 boleto = Numeros.objects.filter(rifa=rifa).filter(numero=request.POST.get('num_boleto')).first()
-                boleto_serialized = NumerosSerializer(boleto, many=False)
-                participante = boleto.participante
-                participante_serialized = ParticipanteSerializer(participante, many=False)
-                boletos = Numeros.objects.filter(id_principal=boleto.id)
-                boletos_serialized = NumerosSerializer(boletos, many=True)
-                return JsonResponse(data={'msg':'Done', 
-                'boleto':boleto_serialized.data, 
-                'participante':participante_serialized.data, 
-                'boletos':boletos_serialized.data, 
-                'rifa':rifa_serialized.data}, status=200)
+                if boleto:
+                    if boleto.seleccionado:
+                        boleto_serialized = NumerosSerializer(boleto, many=False)
+                        participante = boleto.participante
+                        participante_serialized = ParticipanteSerializer(participante, many=False)
+                        boletos = Numeros.objects.filter(id_principal=boleto.id)
+                        boletos_serialized = NumerosSerializer(boletos, many=True)
+                        return JsonResponse(data={'msg':'Done', 
+                        'boleto':boleto_serialized.data, 
+                        'participante':participante_serialized.data, 
+                        'boletos':boletos_serialized.data, 
+                        'rifa':rifa_serialized.data}, status=200)
+                    else:
+                        return JsonResponse(data={'msg':'El boleto aun no sido seleccionado','err':'unselected'}, status=400)
+                else:
+                    return JsonResponse(data={'msg':'El boleto no existe en esta rifa', 'err':'notfound'}, status=400)
             else:
                 return JsonResponse(data={'msg':'Close'}, status=404)
         else:

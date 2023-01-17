@@ -148,6 +148,20 @@
         </form>
     </div>
 </div>
+<!-- Modal Error-->
+<div class="modal fade" id="modalError" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content alert alert-danger">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Error</h5>         
+        </div>
+        <div class="modal-body">
+            <p id="textoError"></p>
+        </div>        
+      </div>
+    </div>
+  </div>
+  
 {% endblock content %}
 {% block script %}
 <script>
@@ -198,8 +212,20 @@ $(document).ready(function(){
             error: function(jqXHR, textStatus, errorThrown){                  
                if(jqXHR.status == 404){
                 location = "{% url 'notfound' %}";
-               }
-                
+               }else if(jqXHR.status == 400 && jqXHR.responseJSON.err == 'unselected'){
+                $('#textoError').text('');
+                $('#textoError').text(jqXHR.responseJSON.msg);
+                $('#modalError').modal('show');
+                setInterval(function(){
+                    $('#modalError').modal('hide');
+                },2500);
+               }else if(jqXHR.status == 400 && jqXHR.responseJSON.err == 'notfound')
+               $('#textoError').text('');
+                $('#textoError').text(jqXHR.responseJSON.msg);
+                $('#modalError').modal('show');
+                setInterval(function(){
+                    $('#modalError').modal('hide');
+                },2500);                
             }
         });
     });
