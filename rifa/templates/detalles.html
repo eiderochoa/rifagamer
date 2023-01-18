@@ -40,7 +40,7 @@
                 <h6>F</h6>
             </div>
             <div class="col-10 col-lg-6 bg-section position-absolute">
-                <h5>{{rifa.producto}}</h5>
+                <h5 id="nombreRifa">{{rifa.producto}}</h5>
                 <h6>{{rifa.fecha_fin}}</h6>
             </div>
         </div>
@@ -185,15 +185,20 @@
   </div>
   <!-- Modal Form -->
   <!-- Modal  Success-->
-    <div class="modal fade" id="modalSuccess" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalSuccess" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content alert alert-success" style="background-color: #d4edda;border-color: #c3e6cb;">
                 <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Éxito</h5>
+                 <h5 class="modal-title" id="exampleModalLabel">Éxito</h5>
                 </div>
                 <div class="modal-body">
-                Su solicitud ha sido enviada. Suerte.
-                </div>        
+                    <h5>Los siguientes datos seran enviados por WhatsApp</h5>
+                    <p id="whatsappMsg"></p>
+                </div>
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-primary">Abrir WhatsApp</a>
+                  </div>
+                    
             </div>
         </div>
     </div>
@@ -245,6 +250,8 @@
     </div>
 </div>
   <!-- Modal Random -->
+
+
   
 {% endblock content %}
 {% block script %}
@@ -449,7 +456,7 @@
             const form = $("#formSelec");
             var data = new FormData(form[0]);
             var urlAdd = $("#formSelec").attr('action');
-            var cadena = 'Participante:%20'+$('#nombre').val()+'%20'+$('#apellidos').val()+',%20Telf:%20'+$('#numeroWhatsapp').val()+',%20Estado:%20'+$('select[name="mx_stado"] option:selected').text()+'.%20Boletos%20Seleccionados:%20';
+            var cadena = 'Rifa:%20'+$('#nombreRifa').text()+'%20Participante:%20'+$('#nombre').val()+'%20'+$('#apellidos').val()+',%20Telf:%20'+$('#numeroWhatsapp').val()+',%20Estado:%20'+$('select[name="mx_stado"] option:selected').text()+'.%20Boletos%20Seleccionados:%20';
            $.ajax({
             url: '{% url 'addparticipante' %}',
             type: "POST",
@@ -494,7 +501,7 @@
                 setTimeout(function () {
                     $('#modalSuccess').modal('hide');
                 }, 3000);
-                location = 'https://api.whatsapp.com/send/?phone=528126475803&text='+cadena.replaceAll(' ','%20');
+                //location = 'https://api.whatsapp.com/send/?phone=528126475803&text='+cadena.replaceAll(' ','%20');
                 //setTimeout(function () {
                     //location.reload();
                 //}, 4000);
@@ -546,13 +553,13 @@
             
 
         });
-        $('#selectForm').on('hidden.bs.modal', function (event) {
+        {% comment %} $('#selectForm').on('hidden.bs.modal', function (event) {
             location.reload();         
 
           });
         $('#maquinita').on('hidden.bs.modal', function(event){
             location.reload();
-        });
+        }); {% endcomment %}
 
     });
     
