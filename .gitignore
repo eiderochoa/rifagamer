@@ -1,7 +1,7 @@
 venv/
-rifagamer/__pycahe__/
+rifagamer/__pycache__/
 djangoproject.sock
-rifa/__pycahe__/
-rifa/migrations/__pycahe__/
-dashboard/__pycahe__/
-dashboard/migrations/__pycahe__/
+rifa/__pycache__/
+rifa/migrations/__pycache__/
+dashboard/__pycache__/
+dashboard/migrations/__pycache__/

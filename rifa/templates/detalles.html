@@ -196,8 +196,8 @@
                     <p id="whatsappMsg"></p>
                 </div>
                 <div class="modal-footer">
-                    <a type="button" class="btn btn-primary">Abrir WhatsApp</a>
-                  </div>
+                    <a id="irWhatsApp" class="btn btn-outline-success" target="_blank" onClick="recargarPagina()"><i class="bi bi-whatsapp"></i> Abrir WhatsApp</a>
+                </div>
                     
             </div>
         </div>
@@ -407,6 +407,12 @@
         });
 
     }
+    //Recargar despues de abrir whatsapp
+    function recargarPagina(){
+        setTimeout(function(){
+            location.reload();
+        },2500)
+    }
     // Eliminar posibilidades //
     function delPosibilidades(b){
         var id =  b+'-p';
@@ -495,12 +501,14 @@
                 }
                 $('#formSelec').trigger('reset');
                 $('#selectForm').modal('hide');
+                $('#irWhatsApp').attr('href','https://api.whatsapp.com/send/?phone=528126475803&text='+cadena.replaceAll(' ','%20'));
+                $('#whatsappMsg').text(cadena.replaceAll('%20',' '));
                 $('#modalSuccess').modal('show');
 
                 //window.open('https://api.whatsapp.com/send/?phone=5351944880&text='+cadena.replaceAll(' ','%20'), '_blank'); 
-                setTimeout(function () {
-                    $('#modalSuccess').modal('hide');
-                }, 3000);
+                //setTimeout(function () {
+                //    $('#modalSuccess').modal('hide');
+                //}, 3000);
                 //location = 'https://api.whatsapp.com/send/?phone=528126475803&text='+cadena.replaceAll(' ','%20');
                 //setTimeout(function () {
                     //location.reload();
