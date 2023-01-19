@@ -142,8 +142,11 @@ def vincularPosibilidades(request):
 
 def showChecarBoleto(request, pk):
     if pk:
-        rifa = Rifa.objects.get(id=pk)
-        return render(request, template_name="checatuboleto.html", context={'rifa':rifa})
+        try:
+            rifa = Rifa.objects.get(id=pk)
+            return render(request, template_name="checatuboleto.html", context={'rifa':rifa})
+        except ObjectDoesNotExist:
+            return render(request, template_name="404.html")
     else:
         return JsonResponse(data={'msg':'Faltan datos'}, status=400)
 
