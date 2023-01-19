@@ -65,8 +65,8 @@
                                 <h5 style="font-family: ChargeVectorBlack; color:#13b69b">Boleto:</h5>
                             </div>
                             <div class="col-8 text-center">
-                                <p id="num_boleto" style="font-weight: bold; font-size: 1.5rem; margin-bottom:0.1rem">00015</p>
-                                <p id="boletos_gratis">00124,13681,12456</p>
+                                <p id="num_boleto" style="font-weight: bold; font-size: 1.5rem; margin-bottom:0.1rem"></p>
+                                <p id="boletos_gratis"></p>
                             </div>
                         </div>
                         <hr style="border-color:white;border-style: dashed;margin-top:0.1rem">
@@ -83,7 +83,7 @@
                                 <h5 style="font-family: ChargeVectorBlack; color:#13b69b; font-size:1rem">Nombre:</h5>
                             </div>
                             <div class="col-7">
-                                <p id="nombre" style="font-weight: bold; font-size: 1rem;">Eider</p>                                
+                                <p id="nombre" style="font-weight: bold; font-size: 1rem;"></p>                                
                             </div>
                         </div>
                         <div class="row"  style="color: white">
@@ -91,7 +91,7 @@
                                 <h5 style="font-family: ChargeVectorBlack; color:#13b69b; font-size:1rem">Apellidos:</h5>
                             </div>
                             <div class="col-7">
-                                <p id="apellidos" style="font-weight: bold; font-size: 1rem;">Ochoa Enriquez</p>                                
+                                <p id="apellidos" style="font-weight: bold; font-size: 1rem;"></p>                                
                             </div>
                         </div>
                         <div class="row"  style="color: white">
@@ -99,7 +99,7 @@
                                 <h5 style="font-family: ChargeVectorBlack; color:#13b69b; font-size:1rem">Estado:</h5>
                             </div>
                             <div class="col-7">
-                                <p id="estado" style="font-weight: bold; font-size: 1rem;">Jalisco</p>                                
+                                <p id="estado" style="font-weight: bold; font-size: 1rem;"></p>                                
                             </div>
                         </div>
                         <div class="row"  style="color: white">
@@ -107,7 +107,7 @@
                                 <h5 style="font-family: ChargeVectorBlack; color:#13b69b; font-size:1rem">Pagado:</h5>
                             </div>
                             <div class="col-7">
-                                <p id="pagado" style="font-weight: bold; font-size: 1rem;">Pagado</p>                                
+                                <p id="pagado" style="font-weight: bold; font-size: 1rem;"></p>                                
                             </div>
                         </div>
                         <div class="row"  style="color: white">
@@ -115,7 +115,7 @@
                                 <h5 style="font-family: ChargeVectorBlack; color:#13b69b; font-size:1rem">Compra:</h5>
                             </div>
                             <div class="col-7">
-                                <p id="fecha" style="font-weight: bold; font-size: 1rem;">Fecha</p>                                
+                                <p id="fecha" style="font-weight: bold; font-size: 1rem;"></p>                                
                             </div>
                         </div>                        
                     </div>
@@ -213,19 +213,27 @@ $(document).ready(function(){
                if(jqXHR.status == 404){
                 location = "{% url 'notfound' %}";
                }else if(jqXHR.status == 400 && jqXHR.responseJSON.err == 'unselected'){
+                if($('#boleto').hasClass('show')){
+                    $('#boleto').collapse('hide');
+                }
                 $('#textoError').text('');
                 $('#textoError').text(jqXHR.responseJSON.msg);
                 $('#modalError').modal('show');
                 setInterval(function(){
                     $('#modalError').modal('hide');
-                },2500);
-               }else if(jqXHR.status == 400 && jqXHR.responseJSON.err == 'notfound')
-               $('#textoError').text('');
+                },3000);
+               }else if(jqXHR.status == 400 && jqXHR.responseJSON.err == 'notfound'){
+                if($('#boleto').hasClass('show')){
+                    $('#boleto').collapse('hide');
+                }
+                $('#textoError').text('');
                 $('#textoError').text(jqXHR.responseJSON.msg);
                 $('#modalError').modal('show');
                 setInterval(function(){
                     $('#modalError').modal('hide');
-                },2500);                
+                },3000); 
+               }
+                              
             }
         });
     });

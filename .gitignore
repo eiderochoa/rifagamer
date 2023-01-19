@@ -2,6 +2,6 @@ venv/
 **/__pycache__/
 djangoproject.sock
 **/__pycache__/
-**/migrations/__pycache__/
+**/rifa/migrations/__pycache__/
 **/__pycache__/
-**/migrations/__pycache__/
+**/dashboard/migrations/__pycache__/
