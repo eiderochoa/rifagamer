@@ -52,7 +52,7 @@
         </div>
         <hr>
         <div class="col-11 mx-auto text-center">
-            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#dd5834">1</span> BOLETO POR ${{rifa.precio_boleto}} ({{rifa.num_posibilidades|calculate:1}} oportunidades)</p>
+            <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#dd5834">1</span> BOLETO POR ${%percent rifa.precio_boleto 100 1 %} ({{rifa.num_posibilidades|calculate:1}} oportunidades)</p>
             <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#13b69b">2</span> BOLETOS POR ${%percent rifa.precio_boleto 99.25 2 %} ({{rifa.num_posibilidades|calculate:2}} oportunidades)</p>
             <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#9558b6">3</span> BOLETOS POR ${% percent rifa.precio_boleto 98.66 3 %} ({{rifa.num_posibilidades|calculate:3}} oportunidades)</p>
             <p class="text-center mb-0" style="color:white"><span style="font-family: ChargeVectorBlack; color:#efc405">5</span> BOLETOS POR ${% percent rifa.precio_boleto 91.35 5%} ({{rifa.num_posibilidades|calculate:5}} oportunidades)</p>
