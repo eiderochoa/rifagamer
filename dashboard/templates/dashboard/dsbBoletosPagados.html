@@ -63,6 +63,11 @@
 {%endblock contentright%}
 {% block script %}
 <script>
+  function discardBoleto(id){
+    fetch('/dashboard/discardboleto/'+id)
+    .then(res => location.reload())
+    .catch(err => console.log(err));
+  }
    $(document).ready(function(){
         $('#selectRifa').on('change',function(){
             $(location).attr("href","/dashboard/showboletospagados/boletos/"+$('#selectRifa').val());

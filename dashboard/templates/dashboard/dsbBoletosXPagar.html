@@ -111,6 +111,12 @@
     });
     }
 
+    function discardBoleto(id){
+      fetch('/dashboard/discardboleto/'+id)
+      .then(res => location.reload())
+      .catch(err => console.log(err));
+    }
+
     $(document).ready(function(){
         $('#selectRifa').on('change',function(){
             $(location).attr("href","/dashboard/showboletosxpagar/boletos/"+$('#selectRifa').val());

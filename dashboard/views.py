@@ -468,6 +468,46 @@ def updCuentaBanco(request):
     else:
         return JsonResponse(data={'msg':'Metodo no permitido'}, status=400)
 
+@login_required
+@permission_required('rifa.change_numeros')
+def discardBoleto(request, pk):
+    if pk:
+        try:
+            boleto = Numeros.objects.get(id=pk)
+            if boleto.seleccionado or boleto.pagado:
+                boleto.seleccionado = False
+                boleto.fecha_seleccionado = None
+                boleto.pagado = False
+                boleto.fecha_pagado = None
+                boleto.ganador = False
+                boleto.participante = None
+                boleto.principal = False
+                boleto.secundario = False
+                boleto.id_principal = None
+                boleto.save()
+                boletos = Numeros.objects.filter(id_principal=boleto.id)
+                if boletos:
+                    for boleto in boletos:
+                        boleto.seleccionado = False
+                        boleto.fecha_seleccionado = None
+                        boleto.pagado = False
+                        boleto.fecha_pagado = None
+                        boleto.ganador = False
+                        boleto.participante = None
+                        boleto.principal = False
+                        boleto.secundario = False
+                        boleto.id_principal = None
+                        boleto.save()
+                
+                return JsonResponse(data={'msg':'Done'}, status=200)
+            else:
+                return JsonResponse(data={'msg':'El boleto aun no ha sido seleccionado'}, status=400)
+        except ObjectDoesNotExist:
+            return JsonResponse(data={'msg':'El Boleto no existe'}, status=404)
+    else:
+        return JsonResponse(data={'msg':'Faltan datos'}, status=400)
+
+
 
 
 

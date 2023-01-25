@@ -32,5 +32,6 @@ urlpatterns = [
     path("addcuentabanco/", addCuentaBanco, name="addcuentabanco"),
     path("delcuentabanco/<int:pk>", delCuentaBanco, name="delcuentabanco"),
     path("getcuentabanco/<int:pk>", getCuentaBanco, name="getcuentabanco"),
-    path("updcuentabanco/", updCuentaBanco, name="updcuentabanco")
+    path("updcuentabanco/", updCuentaBanco, name="updcuentabanco"),
+    path("discardboleto/<int:pk>", discardBoleto, name="discardboleto")
 ]

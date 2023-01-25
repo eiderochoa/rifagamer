@@ -23,6 +23,7 @@
                 <th>Fecha Seleccionado</th>
                 <th>Fecha Pagado</th>
                 <th>Participante</th>
+                <th>Acciones</th>
               </tr>
             </thead>
             <tbody>
@@ -38,7 +39,18 @@
                   {% endif %} {{boleto.numero}}</td>
                 <td>{{boleto.fecha_seleccionado}}</td>
                 <td>{{boleto.fecha_pagado}}</td>
-                <td>{{boleto.participante.nombre}} {{boleto.participante.apellidos}} - {{boleto.participante.telefono}}</td>                
+                <td>{{boleto.participante.nombre}} {{boleto.participante.apellidos}} - {{boleto.participante.telefono}}</td>
+                <td>
+                  {% if boleto.principal %}
+                  <a id="btnDescartarBoleto"
+                  class="btn btn-outline-danger mt-1"
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  onClick="discardBoleto({{boleto.id}})"
+                  title="Descartar">
+                  <i class="bi bi-recycle"></i></a>
+                  {% endif %}
+                </td>                
               </tr>
               {% endfor %}
             {%else%}

@@ -35,19 +35,26 @@
                 <td>{{boleto.participante.nombre}} {{boleto.participante.apellidos}} - {{boleto.participante.telefono}}</td>
                 <td class="text-center">
                   <a id="btnConfirmPago"
-                    class="btn btn-outline-success"
+                    class="btn btn-outline-success mt-1"
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     onClick="setConfirmPago({{boleto.id}})"
                     title="Confirmar Pago">
                     <i class="bi bi-cash-stack"></i></a>
                   <a id="btnaplazarPago"
-                    class="btn btn-outline-info"
+                    class="btn btn-outline-info mt-1"
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     onClick="showAplazarPagoForm({{boleto.id}})"
                     title="Aplazar Pago">
                     <i class="bi bi-alarm-fill"></i></a>
+                  <a id="btnDescartarBoleto"
+                    class="btn btn-outline-danger mt-1"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    onClick="discardBoleto({{boleto.id}})"
+                    title="Descartar">
+                    <i class="bi bi-recycle"></i></a>
                   
                 </td>
               </tr>
