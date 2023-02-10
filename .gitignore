@@ -1,7 +1,6 @@
 venv/
-**/__pycache__/
-djangoproject.sock
-**/__pycache__/
-**/rifa/migrations/__pycache__/
-**/__pycache__/
-**/dashboard/migrations/__pycache__/
+*.log
+*.pot
+*.pyc
+__pycache__/
+media
