@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = True
 
-ALLOWED_HOSTS = ['sock.onat.gob.cu','blue-meet.onat.gob.cu', 'localhost']
+ALLOWED_HOSTS = ['www.rifasgamer.com.mx']
 
 # Enviroment vars
 env = environ.Env(

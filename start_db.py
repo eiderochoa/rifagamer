@@ -4,7 +4,7 @@ try:
     credenciales = {
         "dbname": "rifasdb",
         "user": "rifasuser",
-        "password": "Masterserver,.12",
+        "password": "f4^BULw08Q03",
         "host": "localhost",
         "port": 5432
     }
