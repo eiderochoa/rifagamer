@@ -501,7 +501,7 @@
                 }
                 $('#formSelec').trigger('reset');
                 $('#selectForm').modal('hide');
-                cadena = cadena+ '%20Enlace%20de%20pago:%20https://www.rifasgamer.com.mx/rifas/pagos/%20El siguiente paso es enviar foto del comprobante de pago por aquí.';
+                cadena = cadena+ '%20Enlace%20de%20pago:%20http://www.rifasgamer.com.mx/rifas/pagos/%20El siguiente paso es enviar foto del comprobante de pago por aquí.';
                 $('#irWhatsApp').attr('href','https://api.whatsapp.com/send/?phone=528126475803&text='+cadena.replaceAll(' ','%20'));
                 $('#whatsappMsg').text(cadena.replaceAll('%20',' '));
                 $('#modalSuccess').modal('show');
